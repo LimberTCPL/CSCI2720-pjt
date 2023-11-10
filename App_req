@@ -1,0 +1,28 @@
+分工here
+
+Application requirements:
+User actions:
+1. List all locations in a table as links to single locations and allow sorting of the table 
+with the number of events at venue.
+2. Show all locations in a map, with links to each single location (suggested APIs: Google 
+Maps or MapBox).
+3. Search for locations which contain keywords in the name which will result in a table of 
+location results. 
+4. A separate view for one single location, containing:
+a. A map showing the location.
+b. The location details. 
+c. User comments, where users can add new comments seen by all other users.
+5. Add location into a list of user’s favourite locations and see the list in another view.
+6. Show events whose price under a specific number. (e.g., ≤100)
+7. See the username in the top-right of screen and be able to log out. 
+8. Try to create at least one more feature in your app. 
+Admin actions:
+1. CRUD stored event details in the local database.
+a. We will not test other features (e.g., map, comments) if deleting an existing 
+location. 
+2. CRUD user data (username and password only) in the local database.
+a. We will not test other features (e.g., comments) if deleting an existing user.
+3. Log out as admin.
+Non-user actions:
+1. Log in as user with username and password.
+2. Log in as admin using username and password.
