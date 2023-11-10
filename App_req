@@ -36,7 +36,7 @@ Kenneth
 user:
 *1. Log in as user with username and password.
 *7. See the username in the top-right of screen and be able to log out. 
-*3. Log out as admin.
+*3. Log out
 Limbert
 admin:
 *2. Log in as admin using username and password.
