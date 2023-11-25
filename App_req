@@ -29,6 +29,7 @@ Keith
 1. CRUD stored event details in the local database.
   a. We will not test other features (e.g., map, comments) if deleting an existing 
 location. 
+
 2. CRUD user data (username and password only) in the local database.
   a. We will not test other features (e.g., comments) if deleting an existing user.
 
