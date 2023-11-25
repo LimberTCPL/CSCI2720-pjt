@@ -10,9 +10,9 @@ Angel
 *6. Show events whose price under a specific number. (e.g., ≤100)
 
 Salomon
-*3. Search for locations which contain keywords in the name which will result in a table of location results.
+*3. Search for locations which contain keywords in the name which will result in a table of location results.(done)
 
-
+Salomon,Limbert
 2. Show all locations in a map, with links to each single location (suggested APIs: Google Maps or MapBox).
 4. A separate view for one single location, containing:
   a. A map showing the location.
