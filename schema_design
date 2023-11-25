@@ -1,0 +1,23 @@
+Collections:
+  venues{
+    {
+    locationID: Number, 
+    location: String,
+    latitude: Number,
+    longitude: Number,
+    }
+  }
+  events{
+    {
+    eventID: Number,
+    title: String,
+    
+    description: String,
+    }
+  }
+  users{
+    {
+    
+    
+    }
+  }
