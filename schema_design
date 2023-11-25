@@ -11,13 +11,17 @@ Collections:
     {
     eventID: Number,
     title: String,
-    
+    venueID: Number,
     description: String,
     }
   }
   users{
     {
     
-    
     }
+  }
+  admin{
+  {
+
+  }
   }
