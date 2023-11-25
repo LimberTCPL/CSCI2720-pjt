@@ -14,7 +14,8 @@ Collections:
     venueID: Number,
     date: Date,
     description: String,
-    presenter
+    presenter: String,
+    price: Number,
     }
   }
   users{
