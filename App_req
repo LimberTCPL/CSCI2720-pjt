@@ -4,7 +4,7 @@ phase.1 25/11 9.00p.m. zoom
 Application requirements:
 User actions:
 
-Keith,Angel
+Angel
 *1. List all locations in a table as links to single locations and allow sorting of the table with the number of events at venue.
 *6. Show events whose price under a specific number. (e.g., ≤100)
 
@@ -17,13 +17,14 @@ Salomon
   b. The location details. 
   c. User comments, where users can add new comments seen by all other users.
 
-5. Add location into a list of user’s favourite locations and see the list in another view.
+
 
 
 
 8. Try to create at least one more feature in your app. 
 
 Admin actions:
+Keith
 1. CRUD stored event details in the local database.
   a. We will not test other features (e.g., map, comments) if deleting an existing 
 location. 
@@ -37,6 +38,8 @@ user:
 *1. Log in as user with username and password.
 *7. See the username in the top-right of screen and be able to log out. 
 *3. Log out
+5. Add location into a list of user’s favourite locations and see the list in another view.
+
 Limbert
 admin:
 *2. Log in as admin using username and password.
