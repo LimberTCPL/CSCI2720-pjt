@@ -303,7 +303,7 @@ class Admin extends React.Component{
       } else {
         this.setState({auth: false});
       }
-    }).catch((err)=> alert('error'))
+    })
   }
   render(){
 
