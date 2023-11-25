@@ -12,7 +12,9 @@ Collections:
     eventID: Number,
     title: String,
     venueID: Number,
+    date: Date,
     description: String,
+    presenter
     }
   }
   users{
