@@ -21,11 +21,11 @@ app.use(express.json());
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });*/
-
+//verify the login state
 app.get('/',(req, res, next) => {
     const token = req.cookies.token;
     if(token){
-        jwt.verify(token, "loginkey", (err, decode) =>{
+        jwt.verify(token, "loginkey", (err, decode) =>{  //midleware for checking admin/user(implement later)
             if (err){
                 return res.json({Message: "err"})
             }else{
@@ -40,19 +40,19 @@ app.get('/',(req, res, next) => {
     return res.json({Status : "Login", req.name})
 })
     
-
+//get method to delete cookie for logout
 app.get('/Logout', (req, res) => {
     res.clearCookie('token');
     return res.json({Status: "Logout"})
 })
 
-
+//post method to get login state(implement mongodb later)
 app.post('/Login', (req, res) => {
     const id = req.body.loginID, pwd = req.body.loginpwd;
     if(id== "admin" && pwd== "admin"){
         const name = id;
-        const token = jwt.sign({name}, "loginkey", {expiresIn: '1d'});
-        res.cookie('token', token);
+        const token = jwt.sign({name}, "loginkey", {expiresIn: '1d'});//setup jwt sign for user/admin seprately?
+        res.cookie('token', token);//return cookie(distinguish admin/user?)
         return res.json({Status: "Login"})
     } else {
         return res.json({Message: id + ' ' + pwd})
