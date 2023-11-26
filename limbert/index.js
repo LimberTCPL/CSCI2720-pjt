@@ -22,9 +22,9 @@ class App extends React.Component {
     super(props);
     this.state={auth: false, name: ''}
   }
-  componentWillMount(){
-    console.log('start')
-    axios.get('http://localhost:8081')
+  componentWillMount(){ //get to send req for verify login status
+    //console.log('start')
+    axios.get('http://localhost:8081') //not work idky
     .then(res => {
       if(res.data.Status === "Login"){
         this.setState({auth: true});
@@ -34,9 +34,9 @@ class App extends React.Component {
         
     })
   }
-  handleLogout(e){
+  handleLogout(e){   //get method to send req for logout
     axios.defaults.withCredentials = true;
-    console.log("send");
+    //console.log("send");
     axios.get('http://localhost:8081/Logout')
     .then(res => {
       console.log(res.data.Status);
@@ -251,13 +251,13 @@ class Login extends React.Component{
   }
 
   handleSubmit(e) {
-    axios.defaults.withCredentials = true;
+    axios.defaults.withCredentials = true; 
     e.preventDefault();
     
-    axios.post('http://localhost:8081/Login', this.state)
+    axios.post('http://localhost:8081/Login', this.state) //post to send id,pwd for login
     .then(res => {
       if(res.data.Status === "Login"){
-        window.location.href = '/admin';
+        window.location.href = '/admin'; //redirect to /admin page (implement for spilt /user or /admim later)
       } else {
         alert(res.data.Message)
       }
@@ -293,9 +293,9 @@ class Admin extends React.Component{
     super(props);
     this.state={auth: false, name: ''}
   }
-  componentDidMount(){
+  componentDidMount(){ //get to send req for verify login status
     console.log('start')
-    axios.get('http://localhost:8081')
+    axios.get('http://localhost:8081')//not work idky
     .then(res => {
       if(res.data.Status === "Login"){
         this.setState({auth: true});
