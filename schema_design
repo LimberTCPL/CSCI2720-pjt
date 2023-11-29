@@ -1,24 +1,24 @@
 Collections:
-  venues{
+  location{
     {
-    _locationId: Schema.Types.ObjectId, 
-    location: String,
-    latitude: Number,
-    longitude: Number,
+    locationID: {Number, required: true},
+    location: {String, required: true},
+    latitude: {Number, required: true},
+    longitude: {Number, required: true},
     }
   }
-  events{
+  event{
     {
-    _eventId: Schema.Types.ObjectId,
-    title: String,
-    venueId: {type: Schema.Types.ObjectId, ref: "venues"},
-    date: Date,
-    description: String,
-    presenter: String,
-    price: Number,
+    eventID: {Number, required: true},
+    title:  {String, required: true},
+    venueID: {Number, required: true}, 
+    date: {Date, required: true}, 
+    description:  {String, required: true},
+    presenter: {String, required: true}, 
+    price: {Number, required: true}, 
     }
   }
-  users{
+  user{
     {
     
     }
