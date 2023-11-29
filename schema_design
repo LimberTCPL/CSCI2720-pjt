@@ -11,7 +11,7 @@ Collections:
     {
     _eventId: Schema.Types.ObjectId,
     title: String,
-    venueId: {type: Schema.Types.ObjectId, ref: "venues"}
+    venueId: {type: Schema.Types.ObjectId, ref: "venues"},
     date: Date,
     description: String,
     presenter: String,
