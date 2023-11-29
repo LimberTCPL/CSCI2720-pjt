@@ -17,13 +17,13 @@ db.once('open', function () {
   console.log("Connection is open...");
 
   const locationSchema = mongoose.Schema({
-    locationID: Number,
-    location: String,
-    latitude: Number,
-    longitude: Number,
+    locationID: {type: Number, required: true},
+    location: {type: String, required: true},
+    latitude: {type: Number, required: true},
+    longitude: {type: Number, required: true},
   });
   
-  const location = mongoose.model('venues', locationSchema)
+  const location = mongoose.model('locationss', locationSchema)
 
   location.find({})
   .then((data) => {
