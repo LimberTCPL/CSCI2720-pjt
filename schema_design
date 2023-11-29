@@ -1,21 +1,21 @@
 Collections:
   location{
     {
-    locationID: {Number, required: true},
-    location: {String, required: true},
-    latitude: {Number, required: true},
-    longitude: {Number, required: true},
+    locationID: {type: Number, required: true},
+    location: {type: String, required: true},
+    latitude: {type: Number, required: true},
+    longitude: {type: Number, required: true},
     }
   }
   event{
     {
-    eventID: {Number, required: true},
-    title:  {String, required: true},
-    venueID: {Number, required: true}, 
-    date: {Date, required: true}, 
-    description:  {String, required: true},
-    presenter: {String, required: true}, 
-    price: {Number, required: true}, 
+    eventID: {type: Number, required: true},
+    title:  {type: String, required: true},
+    venueID: {type: Number, required: true}, 
+    date: {type: Date, required: true}, 
+    description:  {type: String, required: true},
+    presenter: {type: String, required: true}, 
+    price: {type: Number, required: true}, 
     }
   }
   user{
