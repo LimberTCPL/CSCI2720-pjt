@@ -1,7 +1,7 @@
 Collections:
   venues{
     {
-    _locationId: type: Schema.Types.ObjectId, 
+    _locationId: Schema.Types.ObjectId, 
     location: String,
     latitude: Number,
     longitude: Number,
@@ -9,9 +9,9 @@ Collections:
   }
   events{
     {
-    eventId: Number,
+    _eventId: Schema.Types.ObjectId,
     title: String,
-    venueId: {type: Schema.Types.ObjectId, ref: "Venues"}
+    venueId: {type: Schema.Types.ObjectId, ref: "venues"}
     date: Date,
     description: String,
     presenter: String,
