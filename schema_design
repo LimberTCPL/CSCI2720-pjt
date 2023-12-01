@@ -11,7 +11,7 @@ Collections:
     {
     eventID: {type: Number, required: true},
     title:  {type: String, required: true},
-    venueID: {type: Number, required: true}, 
+    venueID: {type: Number, required: true}, or {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
     date: {type: Date, required: true}, 
     description:  {type: String, required: true},
     presenter: {type: String, required: true}, 
