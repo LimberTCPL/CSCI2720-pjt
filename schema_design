@@ -31,5 +31,6 @@ Collections:
     //commentID?
     context: {type: String, required: true}
     user: {type: Schema.Types.ObjectId , ref:'Login'} //  {"$oid": "..."},
+    date: {type: String, requred: true}//need ?
     }
   }
