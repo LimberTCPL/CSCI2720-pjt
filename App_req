@@ -26,26 +26,21 @@ Limbert
 
 8. Try to create at least one more feature in your app. 
 
-Admin actions:
 Keith
+Admin actions:
 1. CRUD stored event details in the local database.
   a. We will not test other features (e.g., map, comments) if deleting an existing 
 location. 
-
 2. CRUD user data (username and password only) in the local database.
   a. We will not test other features (e.g., comments) if deleting an existing user.
 
 
 Non-user actions:
-Kenneth
-user:
-*1. Log in as user with username and password.
+Kenneth, Limbert
+user/admin:
+*1. Log in as user/admin with username and password.(send cookie token)
 *7. See the username in the top-right of screen and be able to log out. 
-*3. Log out
+*3. Log out(clear cookie token)
+Kenneth
 5. Add location into a list of user’s favourite locations and see the list in another view.
 
-Limbert
-admin:
-*2. Log in as admin using username and password.
-*7. See the (admin)name in the top-right of screen and be able to log out. 
-*3. Log out as admin.
