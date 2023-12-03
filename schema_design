@@ -29,8 +29,8 @@ Collections:
   Comment{
     {
     //commentID?
-    context: {type: String, required: true}
-    user: {type: Schema.Types.ObjectId , ref:'Login'} //  {"$oid": "..."},
+    context: {type: String, required: true},
+    user: {type: Schema.Types.ObjectId , ref:'Login'}, //  {"$oid": "Login _id"}
     date: {type: String, requred: true}//need ?
     }
   }
