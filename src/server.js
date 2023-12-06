@@ -94,6 +94,56 @@ db.once('open', function () {
         res.send(response); 
       }); 
     });
-  });
 
-const server = app.listen(5000);
+//add comment to server
+app.post('/comment', (req, res) => {
+  const comment = req.body.comment;
+  const username = req.body.username;
+  const locID = req.body.locID;
+  const date = req.body.date;
+  const newComment = new Comment({
+      comment: comment,
+      user: username,
+      locID: locID,
+      date: date
+  })
+  
+  console.log(newComment)
+  newComment.save()
+  .then(() => {
+      res.status(201);
+  })
+});
+
+//show comment in each app
+app.get('/listcomment/:locID',(req,res)=>{
+  const resultset = []
+  Comment.find({locID: {$eq: req.params.locID}})
+  .then((data)=>{
+    for(let i = 0; i<data.length;i++){
+      const comment = data[i].comment;
+      const user = data[i].user;
+      const date = data[i].date;
+      const commentgp = {
+        comment: comment,
+        user: user,
+        date: date
+      }
+      resultset.push(commentgp)
+    }
+    console.log(resultset);
+    res.setHeader("Content-Type", "text/plain");
+    res.send(resultset);
+  })
+  .catch(error => {
+    res.status(500).json({ error: "Failed to read events" });
+  });
+})
+
+
+//mongodb CRUD above this
+});
+
+const server = app.listen(5000, ()=>{
+  console.log("server running") 
+});
