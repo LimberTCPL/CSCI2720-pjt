@@ -28,10 +28,10 @@ Collections:
   }
   Comment{
     {
-    //commentID?
-    context: {type: String, required: true},
-    user: {type: Schema.Types.ObjectId , ref:'Login'}, //  {"$oid": "Login _id"}
-    loc: {type: Schema.Types.ObjectId , ref:'location'},
+    //commentID: {type: Number, required: true, unique: true},
+    comment: {type: String, required: true},
+    user: {type: String, required: true}, //userID maybe? form props
+    locID: {type: Number, required: true}, //locationID form props
     date: {type: String, requred: true}//need ?
     }
   }
