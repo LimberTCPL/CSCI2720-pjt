@@ -1,6 +1,5 @@
 # CSCI2720-pjt
 Building Web Applications Course Project
-*Files in /project
 
 Initial Setup:
 1. Open the terminal and CD to the file
