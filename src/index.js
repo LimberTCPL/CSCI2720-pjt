@@ -4,6 +4,8 @@ import {BrowserRouter, Routes, Route, Link, useLocation, useParams} from 'react-
 import {MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 import {Icon} from "leaflet"
 import MarkerClusterGroup from "react-leaflet-cluster"
+import $ from 'jquery';
+import 'datatables.net';
 
 import "leaflet/dist/leaflet.css";
 import "./style.css"
@@ -141,10 +143,63 @@ class Map extends React.Component {
   }
 }
 
-class Locations extends React.Component {//Table of the locations (task 1,6) => have clickable feature that redirects the user to the separate view for one single location
+class Locations extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      locations: [],
+    };
+  }
+
+  componentDidMount() {
+    this.fetchLocations();
+  }
+
+  componentWillUnmount() {
+    $('#locationTable').DataTable().destroy();
+  }
+  
+  async fetchLocations() {
+    fetch('http://localhost:5000/locations')
+    .then((response) => response.json())
+    .then((data) => {
+      this.setState({ locations: data }, () => {
+        $('#locationTable').DataTable({
+          data: this.state.locations,
+          columns: [
+            { data: 'location',
+              render: function (data, type, row) {
+                if (type === "display") {
+                  return `<a href="/locations/${row.locationID}">${data}</a>`; // Insert links to single locations
+                }
+                return data;
+              }
+            },
+            { data: 'eventCount', className: "text-center" }
+          ]
+        });
+      })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+  
   render() {
     return (
-      <>Table</>
+      <div class="m-5">
+        <h1> Location List </h1>
+        <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-primary">
+          <thead>
+            <tr>
+              <th class="text-center">Locations</th>
+              <th class="text-center">Number of Events</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     )
   }
 }
@@ -157,11 +212,13 @@ class ParticularLocation extends React.Component {
         locationID: 0,
         location: 'Failed to fetch data from the database',
         latitude: 22.35092361814064,
-        longitude: 114.12882020299067
+        longitude: 114.12882020299067,
+        eventCount: 0
       },
       comments:{}
     }
   }
+
   async getMapData(locationID) {
     const response = await fetch("http://localhost:5000/particularLocation", { 
       method: "POST", 
@@ -184,7 +241,8 @@ class ParticularLocation extends React.Component {
         locationID: data.locationID,
         location: data.location,
         latitude: data.latitude,
-        longitude: data.longitude
+        longitude: data.longitude,
+        eventCount: data.eventCount
       }})
     })
   }
@@ -513,4 +571,4 @@ class SearchResults extends React.Component {
 
 
 const root = ReactDOM.createRoot(document.querySelector('#app'));
-root.render(<App name="test"/>);
+root.render(<App name="Map for Cultural Programmes"/>);
