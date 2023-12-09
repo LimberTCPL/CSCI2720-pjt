@@ -16,14 +16,16 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', function () {
   console.log("Connection is open...");
 
-  const locationSchema = mongoose.Schema({
-    locationID: {type: Number, unique: true, required: true},
+  const LocationSchema = mongoose.Schema({
+    _id: {type: mongoose.Schema.Types.ObjectId, required: true},
+    locationID: {type: Number, required: true},
     location: {type: String, required: true},
     latitude: {type: Number, required: true},
     longitude: {type: Number, required: true},
+    eventCount: {type: Number, required: true},
   });
   
-  const location = mongoose.model('locations', locationSchema)
+  const Location = mongoose.model("Location", LocationSchema);
 
   /*
   location.find({})
@@ -43,9 +45,9 @@ db.once('open', function () {
     next();
   });
 
-  //for map
+  // for the map
   app.post('/map', (req, res) => {
-    location.find({})
+    Location.find({})
     .then((data) => {
       response = data;
         res.send(response);
@@ -55,19 +57,31 @@ db.once('open', function () {
     }); 
   })
 
-  //for the separate view for one location
+  // for the locations list
+  app.get('/locations', (req, res) => {
+    Location.find({})
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: 'Internal server error' });
+    })
+  })
+
+  // for the separate view for one location
   app.post('/particularLocation', (req, res) => {
-    location.find({locationID: req.body.locationID})
+    Location.find({locationID: req.body.locationID})
     .then((data) => {
       response = data[0];
         res.send(response);
     })
-    .catch((err) => {
+    .catch((error) => {
       console.log("failed to read");
     }); 
   })
 
-  //for the search of location feature of the search bar
+  // for the search of location feature of the search bar
   app.post('/search', (req, res) => {
     function setUpSearch (keywords){//setting up the RegExp for finding the results
       let tempStr = "" 
@@ -87,7 +101,7 @@ db.once('open', function () {
       }
 
       let response = [];
-      location.find({location: {$regex: searchKeywords}})
+      Location.find({location: {$regex: searchKeywords}})
       .then((data) => {
         response = data;
         console.log(data)
@@ -95,7 +109,7 @@ db.once('open', function () {
       }); 
     });
 
-//add comment to server
+// add comment to server
 app.post('/comment', (req, res) => {
   const comment = req.body.comment;
   const username = req.body.username;
@@ -115,7 +129,7 @@ app.post('/comment', (req, res) => {
   })
 });
 
-//show comment in each app
+// show comment in each app
 app.get('/listcomment/:locID',(req,res)=>{
   const resultset = []
   Comment.find({locID: {$eq: req.params.locID}})
@@ -141,9 +155,9 @@ app.get('/listcomment/:locID',(req,res)=>{
 })
 
 
-//mongodb CRUD above this
+// mongodb CRUD above this
 });
 
-const server = app.listen(5000, ()=>{
+const server = app.listen(5000, () => {
   console.log("server running") 
 });
