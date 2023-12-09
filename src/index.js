@@ -6,6 +6,8 @@ import {Icon} from "leaflet"
 import MarkerClusterGroup from "react-leaflet-cluster"
 import $ from 'jquery';
 import 'datatables.net';
+import UserBox from './component/UserBox';
+import EventBox from './component/EventBox';
 
 import "leaflet/dist/leaflet.css";
 import "./style.css"
@@ -51,6 +53,7 @@ class App extends React.Component {
             <div class={ this.state.navBarCollapse + " navbar-collapse"} id="navbarNavAltMarkup">
               <div class="navbar-nav">
               <Link class="nav-link" to="/">Home</Link>
+              <Link class="nav-link" to="/admin">Admin</Link>
               <Link class="nav-link" to="/map">Map</Link>
               <Link class="nav-link" to="/locations">Locations</Link>
               <Link class="nav-link" to="/search">Search</Link>
@@ -60,6 +63,7 @@ class App extends React.Component {
         </nav>
         <Routes>
           <Route path="/" element={<Home/>} />
+          <Route path="/admin" element={<Admin/>} />
           <Route path="/map" element={<Map/>} />
           <Route path="/locations" element={<Locations/>} />
           <Route path="/locations/:locationID" element={<ParticularLocation/>} />
@@ -79,6 +83,18 @@ class Home extends React.Component {
             </>
         )
     }
+}
+
+class Admin extends React.Component {
+  render() {
+      return (
+          <>
+          <h1>Admin Management System</h1>
+          <EventBox/>
+          <UserBox/>
+          </>
+      )
+  }
 }
 
 const customIcon = new Icon({
