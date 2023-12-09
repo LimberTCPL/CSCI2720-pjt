@@ -1,21 +1,24 @@
 Collections:
   location{
     {
+    _id: {type: mongoose.Schema.Types.ObjectId, required: true},
     locationID: {type: Number, required: true},
     location: {type: String, required: true},
     latitude: {type: Number, required: true},
     longitude: {type: Number, required: true},
+    eventCount: {type: Number, required: true},
     }
   }
   event{
     {
     eventID: {type: Number, required: true},
-    title:  {type: String, required: true},
-    venueID: {type: Number, required: true}, or {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
-    date: {type: Date, required: true}, 
-    description:  {type: String, required: true},
-    presenter: {type: String, required: true}, 
-    price: {type: Number, required: true}, 
+    title: {type: String, required: true},
+    venueID: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true},
+    date: {type: String, required: true},
+    description: {type: String, required: false},
+    presenter: {type: String, required: true},
+    priceInStr: {type: String, required: false},
+    priceInNum: [{type: Number, required: false}], // An array of different prices available
     }
   }
   Login{
