@@ -280,7 +280,7 @@ class ParticularLocation extends React.Component {
           events.forEach(event => {
             tempContents.push(
               <tr>
-                <td><a href={"/event/" + event.locationID}>{event.title}</a></td> 
+                <td>{event.title}</td> 
                 <td>{event.date}</td>
                 <td>{event.description}</td>
                 <td>{event.priceInStr}</td>
