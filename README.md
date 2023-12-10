@@ -5,8 +5,8 @@ Initial Setup:
 1. Open the terminal and CD to the file
 2. Install all dependencies by running: npm install
 3. [Please add the setup instructions for the database]
-4. Initialize locations and events collections by running: node setup.js
-5. Exit the setup script
+4. ? Initialize locations and events collections by running: node setup.js
+5. ? Exit the setup script 
 
 Starting the server
 1. Open the terminal and CD to the file
