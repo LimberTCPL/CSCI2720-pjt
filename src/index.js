@@ -281,7 +281,7 @@ class ParticularLocation extends React.Component {
             tempContents.push(
               <tr>
                 <td>{event.title}</td> 
-                <td>{event.date}</td>
+                <td><p>{event.date.replaceAll('^', '^ \n')}</p></td>
                 <td>{event.description}</td>
                 <td>{event.priceInStr}</td>
               </tr>
@@ -337,7 +337,7 @@ class ParticularLocation extends React.Component {
           <thead>
             <tr>
               <td>Event Name</td>
-              <td>Date</td>
+              <td>Date and Time</td>
               <td>Description</td>
               <td>Price</td>
             </tr>
