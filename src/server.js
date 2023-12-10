@@ -27,6 +27,16 @@ db.once('open', function () {
   
   const Location = mongoose.model("Location", LocationSchema);
 
+  const CommentSchema = mongoose.Schema({
+    //commentID: {type: Number, required: true, unique: true},
+    comment: {type: String, required: true},
+    user: {type: String, required: true}, //type: Schema.Types.ObjectId , ref:'Login'{"$oid": "Login _id"}
+    locID: {type: Number, required: true}, //type: Schema.Types.ObjectId , ref:'locations'?
+    date: {type: String, requred: true}//need ?
+  })
+  
+  const Comment = mongoose.model('Comment', CommentSchema)
+  
   /*
   location.find({})
   .then((data) => {
