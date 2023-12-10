@@ -19,8 +19,9 @@
     "react-router": "^6.20.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "^5.0.1",
+    "reactstrap": "^9.2.1",
     "web-vitals": "^2.1.4",
-    "reactstrap": "^9.2.1"
+    "xmldom": "^0.6.0"
   },
   "scripts": {
     "start": "react-scripts start",
