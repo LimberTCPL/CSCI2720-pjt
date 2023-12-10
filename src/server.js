@@ -27,6 +27,19 @@ db.once('open', function () {
   
   const Location = mongoose.model("Location", LocationSchema);
 
+  const EventSchema = mongoose.Schema({
+    eventID: {type: Number, required: true},
+    title: {type: String, required: true},
+    venueID: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true},
+    date: {type: String, required: true},
+    description: {type: String, required: false},
+    presenter: {type: String, required: true},
+    priceInStr: {type: String, required: false},
+    priceInNum: [{type: Number, required: false}], // An array of different prices available
+  })
+  
+  const Event = mongoose.model("Event", EventSchema)
+  
   const CommentSchema = mongoose.Schema({
     //commentID: {type: Number, required: true, unique: true},
     comment: {type: String, required: true},
@@ -34,6 +47,7 @@ db.once('open', function () {
     locID: {type: Number, required: true}, //type: Schema.Types.ObjectId , ref:'locations'?
     date: {type: String, requred: true}//need ?
   })
+
   
   const Comment = mongoose.model('Comment', CommentSchema)
   
@@ -84,9 +98,21 @@ db.once('open', function () {
     Location.find({locationID: req.body.locationID})
     .then((data) => {
       response = data[0];
-        res.send(response);
+      res.send(response);
     })
     .catch((error) => {
+      console.log("failed to read");
+    }); 
+  })
+
+  app.post('/eventForLocation', (req,res) => {
+    Event.find({venueID: req.body.venueID})
+    .then((data) => {
+      response = data[0];
+      res.send(response);
+    })
+    .catch((error) => {
+      res.status(404)
       console.log("failed to read");
     }); 
   })

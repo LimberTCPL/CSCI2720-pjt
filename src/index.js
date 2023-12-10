@@ -231,6 +231,7 @@ class ParticularLocation extends React.Component {
         longitude: 114.12882020299067,
         eventCount: 0
       },
+      events:{},
       comments:{}
     }
   }
@@ -249,10 +250,23 @@ class ParticularLocation extends React.Component {
     return data;
   }
 
+  async getEventData(venueID) {
+    const response = await fetch("http://localhost:5000/eventForLocation", { 
+      method: "POST", 
+      mode: "cors", 
+      headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      }, 
+      body: JSON.stringify({"venueID": venueID})
+    });
+    let data = await response.json();
+    return data;
+  }
+
   componentDidMount() {
     const locationID = window.location.pathname.split('/')[2] //gets entry 2 of {'', 'location, :locationID}
     this.getMapData(locationID).then((data) => {
-      console.log(data)
       this.setState({location: {
         locationID: data.locationID,
         location: data.location,
@@ -260,7 +274,11 @@ class ParticularLocation extends React.Component {
         longitude: data.longitude,
         eventCount: data.eventCount
       }})
+      this.getEventData(data._id).then((data) => {
+        //want to process the event data to display in the particular event
+      })
     })
+    
   }
 
   render() {
