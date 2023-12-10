@@ -108,7 +108,7 @@ db.once('open', function () {
   app.post('/eventForLocation', (req,res) => {
     Event.find({venueID: req.body.venueID})
     .then((data) => {
-      response = data[0];
+      response = data;
       res.send(response);
     })
     .catch((error) => {

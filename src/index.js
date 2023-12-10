@@ -231,7 +231,7 @@ class ParticularLocation extends React.Component {
         longitude: 114.12882020299067,
         eventCount: 0
       },
-      events:{},
+      events:[],
       comments:{}
     }
   }
@@ -274,11 +274,22 @@ class ParticularLocation extends React.Component {
         longitude: data.longitude,
         eventCount: data.eventCount
       }})
-      this.getEventData(data._id).then((data) => {
+      this.getEventData(data._id).then((events) => {
         //want to process the event data to display in the particular event
+        let tempContents = [];
+          events.forEach(event => {
+            tempContents.push(
+              <tr>
+                <td><a href={"/event/" + event.locationID}>{event.title}</a></td> 
+                <td>{event.date}</td>
+                <td>{event.description}</td>
+                <td>{event.priceInStr}</td>
+              </tr>
+            )
+          })
+            this.setState({events: tempContents})
+        })
       })
-    })
-    
   }
 
   render() {
@@ -299,6 +310,8 @@ class ParticularLocation extends React.Component {
             </Marker>
           </MarkerClusterGroup>
         </MapContainer>
+
+        <h3>Location Details</h3>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -318,6 +331,22 @@ class ParticularLocation extends React.Component {
           </tbody>
         </table>
         <br/>
+
+        <h3>Events</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <td>Event Name</td>
+              <td>Date</td>
+              <td>Description</td>
+              <td>Price</td>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.events}
+          </tbody>
+        </table>
+        
         <Commentlist locationID={this.state.location.locationID}/>
         <Commentform locationID={this.state.location.locationID}/>
       </>
@@ -576,7 +605,6 @@ class SearchResults extends React.Component {
         return {contents: tempContents}
   }
   
-  //TODO: Display results
   render() {
     return(
     <div name="searchResults" onClick={() => console.log(this.state.results)}>
