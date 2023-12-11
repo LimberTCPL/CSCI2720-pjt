@@ -56,7 +56,8 @@ class App extends React.Component {
               <Link class="nav-link" to="/admin">Admin</Link>
               <Link class="nav-link" to="/map">Map</Link>
               <Link class="nav-link" to="/locations">Locations</Link>
-              <Link class="nav-link" to="/search">Search</Link>
+              <Link class="nav-link" to="/events">Events</Link>
+              {/*<Link class="nav-link" to="/search">Search</Link>*/}
               </div>
             </div>
           </div>
@@ -67,8 +68,9 @@ class App extends React.Component {
           <Route path="/map" element={<Map/>} />
           <Route path="/locations" element={<Locations/>} />
           <Route path="/locations/:locationID" element={<ParticularLocation/>} />
-          <Route path="/search" element={<Search />} />
-          <Route path="*" element={<NoMatch />} />
+          <Route path="/events" element = {<Events title={"Event List"} venueID={""}/>} />
+          <Route path="/search" element={<Search/>} />
+          <Route path="*" element={<NoMatch/>} />
         </Routes>
       </BrowserRouter>
       )
@@ -89,7 +91,7 @@ class Admin extends React.Component {
   render() {
       return (
           <>
-          <h1>Admin Management System</h1>
+          <h2>Admin Management System</h2>
           <EventBox/>
           <UserBox/>
           </>
@@ -134,27 +136,30 @@ class Map extends React.Component {
 
   render() {
     return (
-      <>
+      <div class="m-4">
         <h2>Map</h2>
-        <MapContainer center={[22.35092361814064, 114.12882020299067]} zoom={12} style={{position: 'center', height: '80vh', width: '80vw' }}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-          />
-          <MarkerClusterGroup
-            chunkedLoading
-          >
-            {this.state.markers.map((marker)=> (
-              <Marker position={[marker.latitude, marker.longitude]} icon={customIcon}>
-                <Popup>
-                  <h2>{marker.location}</h2>
-                  <h3><a href={"/locations/" + marker.locationID}>Click here for more</a></h3>
-                </Popup>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-        </MapContainer>
-      </>
+        <hr />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <MapContainer center={[22.35092361814064, 114.12882020299067]} zoom={12} style={{position: 'center', height: '80vh', width: '80vw' }}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+            />
+            <MarkerClusterGroup
+              chunkedLoading
+            >
+              {this.state.markers.map((marker)=> (
+                <Marker position={[marker.latitude, marker.longitude]} icon={customIcon}>
+                  <Popup>
+                    <h2>{marker.location}</h2>
+                    <h3><a href={"/locations/" + marker.locationID}>Click here for more</a></h3>
+                  </Popup>
+                </Marker>
+              ))}
+            </MarkerClusterGroup>
+          </MapContainer>
+        </div>
+      </div>
     )
   }
 }
@@ -192,7 +197,8 @@ class Locations extends React.Component {
               }
             },
             { data: 'eventCount', className: "text-center" }
-          ]
+          ],
+          paging: false
         });
       })
     })
@@ -203,8 +209,9 @@ class Locations extends React.Component {
   
   render() {
     return (
-      <div class="m-5">
-        <h1> Location List </h1>
+      <div class="m-4">
+        <h2>Location List</h2>
+        <hr />
         <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-primary">
           <thead>
             <tr>
@@ -250,6 +257,7 @@ class ParticularLocation extends React.Component {
     return data;
   }
 
+  /*
   async getEventData(venueID) {
     const response = await fetch("http://localhost:5000/eventForLocation", { 
       method: "POST", 
@@ -263,6 +271,7 @@ class ParticularLocation extends React.Component {
     let data = await response.json();
     return data;
   }
+  */
 
   componentDidMount() {
     const locationID = window.location.pathname.split('/')[2] //gets entry 2 of {'', 'location, :locationID}
@@ -274,82 +283,91 @@ class ParticularLocation extends React.Component {
         longitude: data.longitude,
         eventCount: data.eventCount
       }})
-      this.getEventData(data._id).then((events) => {
+
+      /*
+      this.getEventData(data._id).then((eventsInVenue) => {
         //want to process the event data to display in the particular event
         let tempContents = [];
-          events.forEach(event => {
-            tempContents.push(
-              <tr>
-                <td>{event.title}</td> 
-                <td><p>{event.date.replaceAll('^', '^ \n')}</p></td>
-                <td>{event.description}</td>
-                <td>{event.priceInStr}</td>
-              </tr>
-            )
-          })
-            this.setState({events: tempContents})
+        
+        events.forEach(event => {
+          tempContents.push(
+            <tr>
+              <td>{event.title}</td> 
+              <td><p>{event.date.replaceAll('^', '^ \n')}</p></td>
+              <td>{event.description}</td>
+              <td>{event.priceInStr}</td>
+            </tr>
+          )
         })
+
+        this.setState({events: tempContents})
       })
+      */
+    })
   }
 
   render() {
     return (
-      <>
-        <MapContainer center={[this.state.location.latitude, this.state.location.longitude]} zoom={10} style={{height: '40vh', width: '60vw'}}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-          />
-          <MarkerClusterGroup
-            chunkedLoading
-          >
-            <Marker position={[this.state.location.latitude, this.state.location.longitude]} icon={customIcon}>
-                <Popup>
-                  <h2>{this.state.location.location}</h2>
-                </Popup>
-            </Marker>
-          </MarkerClusterGroup>
-        </MapContainer>
+      <div class="m-4">
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <MapContainer center={[this.state.location.latitude, this.state.location.longitude]} zoom={10} style={{height: '40vh', width: '60vw'}}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+            />
+            <MarkerClusterGroup
+              chunkedLoading
+            >
+              <Marker position={[this.state.location.latitude, this.state.location.longitude]} icon={customIcon}>
+                  <Popup>
+                    <h2>{this.state.location.location}</h2>
+                  </Popup>
+              </Marker>
+            </MarkerClusterGroup>
+          </MapContainer>
+        </div>
 
-        <h3>Location Details</h3>
-        <table class="table table-bordered">
+        <div class="m-4">
+          <h2>Location Details</h2>
+          <table class="table table-bordered table-striped table-sm table-primary">
+            <tbody>
+              <tr>
+                <th scope="row">Location:</th>
+                <td>{this.state.location.location}</td>
+              </tr>
+              <tr>
+                <th scope="row">Latitude:</th>
+                <td>{this.state.location.latitude}</td>
+              </tr>
+              <tr>
+                <th scope="row">Longitude:</th>
+                <td>{this.state.location.longitude}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <Events title={`Event List for ${this.state.location.location}`} venueID={this.state.location.locationID} />
+
+        {/*
+        <table class="table table-bordered table-striped table-sm table-primary">
           <thead>
             <tr>
-              <td>Location:</td>
-              <td>{this.state.location.location}</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Latitude:</td>
-              <td>{this.state.location.latitude}</td>
-            </tr>
-            <tr>
-              <td>Longitude:</td>
-              <td>{this.state.location.longitude}</td>
-            </tr>
-          </tbody>
-        </table>
-        <br/>
-
-        <h3>Events</h3>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <td>Event Name</td>
-              <td>Date and Time</td>
-              <td>Description</td>
-              <td>Price</td>
+              <th>Event Name</th>
+              <th>Date and Time</th>
+              <th>Description</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
             {this.state.events}
           </tbody>
         </table>
+        */}
         
         <Commentlist locationID={this.state.location.locationID}/>
         <Commentform locationID={this.state.location.locationID}/>
-      </>
+      </div>
     )
   }
 }
@@ -474,7 +492,7 @@ class Commentlist extends React.Component{
           <div class="card shadow-0 border">
             <div class="card-body p-4">
               <div class="form-outline mb-4">
-                <label class="form-label"><h1>Comment</h1></label>
+                <label class="form-label"><h2>Comment</h2></label>
               </div>
               {this.state.commentset}
             </div>
@@ -487,8 +505,155 @@ class Commentlist extends React.Component{
   }
 }
 
+class Events extends React.Component {
+  constructor() {
+    super();
+    this.handleChange = this.handleChange.bind(this);
+    this.state = { results: [] };
+  }
+
+  handleChange(results) {
+    if (this.props.venueID == "") {
+      this.setState({ results: results }); // state lifted from <FilterEventBar/>
+      //console.log(this.state.results);
+    } else {
+      const filteredResults = results.filter(event => event.venueID.locationID == this.props.venueID);
+      this.setState({ results: filteredResults });
+    }
+  }
+
+  render() {
+    return (
+      <div class="m-4">
+        <h2>{this.props.title}</h2>
+        <FilterEventBar venueID={this.props.venueID} onResultsChange={this.handleChange /*by passing this function as para, allowing the lifting of state from <FilterEventBar/> up to <EventList/>*/}/> 
+        <hr />
+        <EventList venueID={this.props.venueID} results={this.state.results}/>
+      </div>
+    )
+  }
+}
+
+class FilterEventBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleFilter = this.handleFilter.bind(this);
+    this.state = { isValid: 1 };
+  }
+
+  componentDidMount(){
+    this.handleFilter();
+  }
+
+  handleChange(results) {
+    this.props.onResultsChange(results); // Lifting state up step 2 
+  }
+
+  handleFilter() {
+    let price = document.getElementById("eventFilter").value;
+    //console.log(target);
+
+    const validExpression = /^\d*$/;
+
+    if (validExpression.test(price)) {
+      this.setState({ isValid: 1 });
+      this.getEvents(price).then((data) => {
+        const results = data;
+        this.handleChange(results); // Lifting state up step 1 (go to step 2)
+      });
+    } else {
+      this.setState({ isValid: 0 });
+    }
+  }
+
+  async getEvents(price) { // accepts a number, outputs a json of event results
+    const param = {"price": price};
+    const response = await fetch("http://localhost:5000/events", { 
+      method: "POST",
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(param)
+    });
+
+    let data = await response.json();
+    return data;
+  }
+
+  render() {
+    return (
+      <div name="" style={{ display: 'flex', alignItems: 'center' }}>
+        <label for="eventFilter">Filter for Events with Price Under $ &nbsp; </label>
+        <input  type="search" id="eventFilter" name="eventFilter" onChange={this.handleFilter}></input>
+        <p id="invalidMessage" style={{visibility: this.state.isValid ? "hidden" : "visible", color: "red"} }> Only numbers are allowed </p>
+      </div>
+      // onChange: when the content of the filter box changes, we update the filtered results accordingly
+    )
+  }
+}
+
+class EventList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { results: props.results };
+  }
+
+  static getDerivedStateFromProps(props){ // this function gets called when there is a change in the props of this component
+    return { results: props.results };
+  }
+
+  componentDidUpdate() {
+    $('#eventTable').DataTable().destroy();
+    
+    console.log(this.state.results);
+
+    $('#eventTable').DataTable({
+      data: this.state.results,
+      columns: [
+        { data: 'title' },
+        { data: 'venueID.location',
+          render: function (data, type, row) {
+            if (type === "display") {
+              return `<a href="/locations/${row.venueID.locationID}">${data}</a>`; // Insert links to single locations
+            }
+            return data;
+          },
+          visible: this.props.venueID == "" ? true : false
+        },
+        { data: 'date' },
+        { data: 'description' },
+        { data: 'presenter'},
+        { data: 'priceInStr' }
+      ]
+    });
+  }
+  
+  render() {
+    return (
+      <div>
+        <table id="eventTable" class="table table-bordered table-striped table-sm table-primary">
+          <thead>
+            <tr>
+              <th class="text-center">Event Name</th>
+              <th class="text-center">Venue</th>
+              <th class="text-center">Date and Time</th>
+              <th class="text-center">Description</th>
+              <th class="text-center">Presenter</th>
+              <th class="text-center">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+}
+
 class Search extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.handleChange = this.handleChange.bind(this)
     this.state = {results: [ {
@@ -499,7 +664,7 @@ class Search extends React.Component {
   }
 
   handleChange(results) {
-    this.setState({results: results}) //state lifted from <SearchBar/>
+    this.setState({results: results}) // state lifted from <SearchBar/>
   }
 
   render() {
@@ -521,28 +686,27 @@ class SearchBar extends React.Component {
   }
 
   componentDidMount(){
-    this.handleSearch()
+    this.handleSearch();
   }
 
   handleChange(results) {
-    this.props.onResultsChange(results) //Lifting state up step 2 
+    this.props.onResultsChange(results); // Lifting state up step 2 
   }
 
   handleSearch() {
-      let target = document.getElementById("locationSearch").value; 
-      //console.log(target)
-      const validExpression = /^[A-Za-z()\ ]*$/;
-      if (validExpression.test(target)) {
-        this.setState({isValid: 1});
-        this.getLocations(target).then((data) => {
-          const results = data;
-          this.handleChange(results);//Lifting state up step 1 (go to step 2)
-        });
-      }else{
-        this.setState({isValid: 0})
-        
-      }
-    };
+    let target = document.getElementById("locationSearch").value; 
+    //console.log(target)
+    const validExpression = /^[A-Za-z()\ ]*$/;
+    if (validExpression.test(target)) {
+      this.setState({isValid: 1});
+      this.getLocations(target).then((data) => {
+        const results = data;
+        this.handleChange(results); // Lifting state up step 1 (go to step 2)
+      });
+    } else {
+      this.setState({isValid: 0});
+    }
+  };
     
  async getLocations(target) { //accepts a string, outputs a json of location results
       const param = {"name": target};
@@ -560,14 +724,13 @@ class SearchBar extends React.Component {
   } 
 
   //add functionality to display all locations upon load [DONE]
-   
   
   render() {
     return (
         <div name="">
         <label for="locationSearch">Search for location: &nbsp; </label>
         <input  type="search" id="locationSearch" name="locationSearch" onChange={this.handleSearch}></input>
-        <p  id="invalidMessage" style={{visibility: this.state.isValid ? "hidden" : "visible", color: "red"} }> Allowed Characters: A-Z, a-z, (, ), space </p>
+        <p id="invalidMessage" style={{visibility: this.state.isValid ? "hidden" : "visible", color: "red"} }> Allowed Characters: A-Z, a-z, (, ), space </p>
         </div>
         //onChange: when the content of the search box changes, we update the search results accordingly [DONE]
         //to do: make a list that shows [Below, <SearchResults/>] [DONE]
