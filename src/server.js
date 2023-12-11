@@ -38,7 +38,7 @@ db.once('open', function () {
     priceInNum: [{type: Number, required: false}], // An array of different prices available
   })
   
-  const Event = mongoose.model("Event", EventSchema)
+  const Event = mongoose.model("Event", EventSchema);
   
   const CommentSchema = mongoose.Schema({
     //commentID: {type: Number, required: true, unique: true},
@@ -47,9 +47,8 @@ db.once('open', function () {
     locID: {type: Number, required: true}, //type: Schema.Types.ObjectId , ref:'locations'?
     date: {type: String, requred: true}//need ?
   })
-
   
-  const Comment = mongoose.model('Comment', CommentSchema)
+  const Comment = mongoose.model('Comment', CommentSchema);
   
   /*
   location.find({})
@@ -81,7 +80,7 @@ db.once('open', function () {
     }); 
   })
 
-  // for the locations list
+  // for the location list
   app.get('/locations', (req, res) => {
     Location.find({})
     .then((data) => {
@@ -105,7 +104,44 @@ db.once('open', function () {
     }); 
   })
 
-  app.post('/eventForLocation', (req,res) => {
+  // for the filtered event list
+  app.post('/events', (req, res) => {
+    const price = req.body.price; // this retrieves the price in the event filter bar
+
+    if (price == "") { // Respond with the whole event list
+      Event.find({})
+      .populate({
+        path: "venueID",
+        select: "locationID location"
+      })
+      .exec()
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+      })
+    } else { // Find the event with specified price
+      Event.find({ priceInNum: { $lte: price } })
+      .populate({
+        path: "venueID",
+        select: "locationID location"
+      })
+      .exec()
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+      })
+    }
+  })
+
+  /*
+  // for the events for a specific location
+  app.post('/eventForLocation', (req, res) => {
     Event.find({venueID: req.body.venueID})
     .then((data) => {
       response = data;
@@ -116,34 +152,35 @@ db.once('open', function () {
       console.log("failed to read");
     }); 
   })
-
+  */
+  
   // for the search of location feature of the search bar
   app.post('/search', (req, res) => {
-    function setUpSearch (keywords){//setting up the RegExp for finding the results
+    function setUpSearch (keywords) { // setting up the RegExp for finding the results
       let tempStr = "" 
       keywords.forEach(keyword => {tempStr += "(?=.*" + keyword + ")"});
-      let searchRegex =  tempStr 
-      console.log(searchRegex)
+      let searchRegex =  tempStr;
+      console.log(searchRegex);
       return searchRegex;
     } 
 
-      const target = req.body.name //this retrieves the contents in the search bar
-      console.log(target)
-      let searchKeywords = ''
-      if (target){ //handles the case where the search box is non-empty => modify searchKeywords. Hence if the search box is empty searchKeywords = ''
-          let keywords = target.trim().split(/[\s_()]+/)
-          searchKeywords = RegExp(setUpSearch(keywords),'i');
-          console.log(searchKeywords)
-      }
+    const target = req.body.name // this retrieves the contents in the search bar
+    console.log(target);
+    let searchKeywords = ''
+    if (target) { // handles the case where the search box is non-empty => modify searchKeywords. Hence if the search box is empty searchKeywords = ''
+      let keywords = target.trim().split(/[\s_()]+/)
+      searchKeywords = RegExp(setUpSearch(keywords),'i');
+      console.log(searchKeywords);
+    }
 
-      let response = [];
-      Location.find({location: {$regex: searchKeywords}})
-      .then((data) => {
-        response = data;
-        console.log(data)
-        res.send(response); 
-      }); 
-    });
+    let response = [];
+    Location.find({location: {$regex: searchKeywords}})
+    .then((data) => {
+      response = data;
+      console.log(data)
+      res.send(response); 
+    }); 
+  });
 
 // add comment to server
 app.post('/comment', (req, res) => {
