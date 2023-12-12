@@ -7,6 +7,7 @@ Initial Setup:
 3. Open MongoDB Compass and connect to mongodb://localhost:27017/project
 4. Initialize locations and events collections by running: node src/setup.js
 5. Exit the setup script when "All data have been saved to MongoDB. You may terminate and close setup.js now." appears in the terminal
+6. [Make sure to also add in the setup instructions for the admin/user data base]
 
 Starting the server
 1. Open the terminal and CD to the file
