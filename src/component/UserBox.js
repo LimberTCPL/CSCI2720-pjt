@@ -16,7 +16,7 @@ class UserBox extends Component {
 
   fetchUserEvents = async () => {
     try {
-      const response = await fetch('http://localhost:3001/userevents');
+      const response = await fetch('http://localhost:5001/Adminuserevents');
       if (response.ok) {
         const data = await response.json();
         this.setState({ userEvents: data });
@@ -31,7 +31,7 @@ class UserBox extends Component {
 
   addUserEvent = async (eventData) => {
     try {
-      const response = await fetch('http://localhost:3001/userevents', {
+      const response = await fetch('http://localhost:5001/Adminuserevents', {
         method: 'POST',
         body: JSON.stringify(eventData),
         headers: {
@@ -55,7 +55,7 @@ class UserBox extends Component {
 
   deleteUserEvent = async (username) => {
     try {
-      const response = await fetch(`http://localhost:3001/userevents/${username}`, {
+      const response = await fetch(`http://localhost:5001/Adminuserevents/${username}`, {
         method: 'DELETE',
       });
 
@@ -75,7 +75,7 @@ class UserBox extends Component {
 
   updateUserEvent = async (username, UsereventData) => {
     try {
-      const response = await fetch(`http://localhost:3001/userevents/${username}`, {
+      const response = await fetch(`http://localhost:5001/Adminuserevents/${username}`, {
         method: 'PUT',
         body: JSON.stringify(UsereventData),
         headers: {

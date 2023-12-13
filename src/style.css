@@ -7,7 +7,11 @@ body {
 /* map container */
 .leaflet-container {
   height: 80vh;
+<<<<<<< HEAD
+  z-index: 1;
+=======
   z-index:1;
+>>>>>>> refs/remotes/origin/main
 }
 
 /* locations table */
@@ -127,4 +131,8 @@ button:hover {
 
 h2 {
   text-align: center;
+}
+
+body{
+  overflow: hidden;
 }

@@ -1,2 +1,0 @@
-react router dom... is default(check assignment2/lab5-6)
-server extra: npm install express myssql cors nodemon cookie-parser jsonwebtoken

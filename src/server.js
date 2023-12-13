@@ -1,10 +1,17 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://admin:admin_password@cluster0.a4b2rml.mongodb.net/?retryWrites=true&w=majority";
 app.use(bodyParser.json({ type: ["application/json", "application/csp-report"] }));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cors());
+app.use(express.json());
 
-
+var refreshTokenList = [];
+let user
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1:27017/project');
@@ -50,6 +57,36 @@ db.once('open', function () {
   
   const Comment = mongoose.model('Comment', CommentSchema);
   
+  const AdminEventSchema = mongoose.Schema({
+    eventID: {
+      type: Number,
+      required: [true, "Event ID is required"],
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    quota: {
+      type: Number,
+      required: true,
+    },
+  });
+
+  const AdminEvent = mongoose.model("AdminEvent", AdminEventSchema);
+
+  const AdminUserSchema = mongoose.Schema({
+    username: {
+      type: String,
+      required: [true,"User Name is required"],
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+  });
+
+  const AdminUser = mongoose.model("AdminUser",AdminUserSchema);
+
   /*
   location.find({})
   .then((data) => {
@@ -70,9 +107,10 @@ db.once('open', function () {
 
   // for the map
   app.post('/map', (req, res) => {
+    let response;
     Location.find({})
     .then((data) => {
-      response = data;
+        response = data;
         res.send(response);
     })
     .catch((err) => {
@@ -94,6 +132,7 @@ db.once('open', function () {
 
   // for the separate view for one location
   app.post('/particularLocation', (req, res) => {
+    let response;
     Location.find({locationID: req.body.locationID})
     .then((data) => {
       response = data[0];
@@ -227,10 +266,230 @@ app.get('/listcomment/:locID',(req,res)=>{
   });
 })
 
-
-// mongodb CRUD above this
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
 });
 
-const server = app.listen(5000, () => {
+app.post('/login', (req, res) => {
+   async function run() {
+     try {
+        // Connect the client to the server	(optional starting in v4.7)
+        await client.connect();
+        // Send a ping to confirm a successful connection
+        await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    
+        const collection = client.db("user").collection("yy");
+        const temp = collection.find({});
+        const cursor = await temp.toArray();
+
+        for (const doc of cursor) {
+           if (doc.username === req.body.username && doc.password === req.body.password) {
+              user = doc
+           }
+        }
+
+        if (!user) {
+           // indicate an insuccessful login 
+           return res.status(401).json({ message: 'Wrong credientials!' });;
+       }
+    
+       // generate accessToken with duration of 5 min and refreshToken with duration of 1 day
+       const accessToken = jwt.sign(
+          { username: user.username, role: user.role }, 
+          user.priKey, 
+          { expiresIn: '5m' }
+       );
+    
+       const refreshToken = jwt.sign(
+          { username: user.username, role: user.role }, 
+          user.priKey, 
+          { expiresIn: '1d' }
+       );
+    
+       // push the refreshToken into the refreshToken array
+       refreshTokenList.push(refreshToken);
+    
+       // send back the respone to client
+       res.json({ accessToken, refreshToken });
+
+       // console.log(user)
+      } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
+      }
+   }
+   run().catch(console.dir);
+});
+
+app.post('/refresh', (req, res) => {
+   const refreshToken = req.body.token;
+
+   if (!refreshToken) {
+      // if there is no refreshToken, raise unautorized status
+      return res.status(401).json({ message: 'You are not unautorized yet!' });
+   }
+
+   if (!refreshTokenList.includes(refreshToken)) {
+      // if the refreshToken is not included in the array, raise forbidden status
+      return res.status(403).json({ message: 'You are not allowed to access this page!' });;
+   }
+
+   jwt.verify(refreshToken, user.priKey, (err, user) => {
+      if (err) {
+         // if there is some problems in the verification of refreshToken, raise the forbidden status
+         return res.status(403).json({ message: 'You cannot pass the verification!' });;
+      }
+
+      // generate a new accessToken if no error occurs
+      const accessToken = jwt.sign({ username: user.username, role: user.role }, user.priKey, { expiresIn: '5m' });
+
+      // send the new accessToken back
+      res.json({ accessToken });
+   });
+});
+
+app.post('/logout', (req, res) => {
+   // remove the refeshToken from array to proceed the logout command
+   refreshTokenList = refreshTokenList.filter((token) => token !== req.body.token);
+   user = null;
+   // send back a successful process
+   res.json({ message: 'You have logged out successfully' });
+});
+
+//mongodb CRUD
+
+
+app.post('/Adminevents', (req, res) => {
+  const { eventID, location, quota } = req.body;
+  const newEvent = new AdminEvent({ eventID, location, quota });
+
+  newEvent.save()
+    .then(() => {
+      console.log("A new event created successfully");
+      res.json({ message: 'Event created successfully' });
+    })
+    .catch((error) => {
+      console.log("Failed to save new event");
+      res.status(500).json({ error: 'Failed to create event' });
+    });
+});
+
+app.post('/Adminuserevents', (req, res) => {
+    const { username,password} = req.body;
+    const newUser = new AdminUser({ username,password });
+  
+    newUser.save()
+      .then(() => {
+        console.log("A new user created successfully");
+        res.json({ message: 'User created successfully' });
+      })
+      .catch((error) => {
+        console.log("Failed to save new user");
+        res.status(500).json({ error: 'Failed to create user' });
+      });
+  });
+
+app.get('/Adminevents', (req, res) => {
+  AdminEvent.find({})
+    .then(events => {
+      res.json(events);
+    })
+    .catch(error => {
+      res.status(500).json({ error: "Failed to read events" });
+    });
+});
+
+app.get('/Adminuserevents', (req, res) => {
+  AdminUser.find({})
+      .then(user => {
+        res.json(user);
+      })
+      .catch(error => {
+        res.status(500).json({ error: "Failed to read user" });
+      });
+  });
+  
+  app.delete('/Adminevents/:eventId', (req, res) => {
+    const eventId = req.params.eventId;
+  
+    AdminEvent.findByIdAndDelete(eventId)
+      .then(() => {
+        console.log('Event deleted successfully');
+        res.json({ message: 'Event deleted successfully' });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete event' });
+      });
+  });
+
+  app.delete('/Adminuserevents/:username', (req, res) => {
+    const username = req.params.username;
+  
+    AdminUser.findOneAndDelete({ username: username })
+      .then(() => {
+        console.log('User deleted successfully');
+        res.json({ message: 'User deleted successfully' });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete user' });
+      });
+  });
+
+app.put('/Adminevents/:eventId', (req, res) => {
+    const eventId = req.params.eventId;
+    const { location, quota } = req.body;
+  
+    AdminEvent.findByIdAndUpdate(
+      { _id: eventId },
+      { location, quota },
+      { new: true }
+    )
+      .then((updatedEvent) => {
+        if (updatedEvent) {
+          console.log('Event updated successfully:', updatedEvent);
+          res.json({ message: 'Event updated successfully' });
+        } else {
+          res.status(404).json({ error: 'Event not found' });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update event' });
+      });
+  });
+
+  app.put('/Adminuserevents/:username', (req, res) => {
+    const username = req.params.username;
+    const { password } = req.body;
+  
+    AdminUser.findOneAndUpdate(
+      { username: username },
+      { password: password },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        if (updatedUser) {
+          console.log('User updated successfully:', updatedUser);
+          res.json({ message: 'User updated successfully' });
+        } else {
+          res.status(404).json({ error: 'User not found' });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update user' });
+      });
+  });
+
+});
+
+const server = app.listen(5001, () => {
   console.log("server running") 
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../style.css';
 
 class EventList extends Component {
   constructor(props) {
