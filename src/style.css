@@ -1,5 +1,7 @@
 body {
   overflow-x: hidden; /* Hide scrollbars */
+  background-image: url("/src/img/bgImg.jpg");
+  background-repeat: repeat;
 }
 
 /* map container */
