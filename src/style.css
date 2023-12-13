@@ -1,6 +1,11 @@
+body {
+  overflow-x: hidden; /* Hide scrollbars */
+}
+
 /* map container */
 .leaflet-container {
   height: 80vh;
+  z-index:1;
 }
 
 /* locations table */

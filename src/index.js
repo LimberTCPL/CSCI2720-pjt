@@ -8,6 +8,7 @@ import $ from 'jquery';
 import 'datatables.net';
 import UserBox from './component/UserBox';
 import EventBox from './component/EventBox';
+import coverVid from './vid/coverVid.mp4';
 
 import "leaflet/dist/leaflet.css";
 import "./style.css"
@@ -27,45 +28,38 @@ function NoMatch() {
 class App extends React.Component {
   constructor(){
     super()
-    this.navBarCollapseControl = this.navBarCollapseControl.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
-      navBarCollapse: 'collapse',
-      navBarIndex: 1
+      navDisplayIndex: 0,
+      navDisplay: ''
   }
   }
 
-  navBarCollapseControl(){
-    if (this.state.navBarIndex){
-      this.setState({navBarCollapse: '', navBarIndex: 0})
+  handleChange () {
+    console.log('1')
+    if (this.state.navDisplayIndex){
+      this.setState({navDisplay: 'none', navBarIndex: 0})
     }else{
-      this.setState({navBarCollapse: 'collapse', navBarIndex: 1})
+      this.setState({navDisplay: 'block', navBarIndex: 1})
+    }
+  }
+  static getDerivedStateFromProps(){
+    const route = window.location.pathname
+    console.log(route)
+    if (route == '/'){
+      return {navDisplay: 'none', navBarIndex: 0}
+    }else{
+      return {navDisplay: 'block', navBarIndex: 1}
     }
   }
     render() {
       return(
         <BrowserRouter>
-        <nav class="navbar navbar-expand-lg bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="#">App</a>
-            <button class="navbar-toggler" type="button" onClick={this.navBarCollapseControl} >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class={ this.state.navBarCollapse + " navbar-collapse"} id="navbarNavAltMarkup">
-              <div class="navbar-nav">
-              <Link class="nav-link" to="/">Home</Link>
-              <Link class="nav-link" to="/admin">Admin</Link>
-              <Link class="nav-link" to="/map">Map</Link>
-              <Link class="nav-link" to="/locations">Locations</Link>
-              <Link class="nav-link" to="/events">Events</Link>
-              {/*<Link class="nav-link" to="/search">Search</Link>*/}
-              </div>
-            </div>
-          </div>
-        </nav>
+        <NavBar display={this.state.navDisplay} handleChange={this.handleChange}/>
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/admin" element={<Admin/>} />
-          <Route path="/map" element={<Map/>} />
+          <Route path="/" element={<Home handleChange={this.handleChange} />}/>
+          <Route path="/admin" element={<Admin/>}/>
+          <Route path="/map" element={<Map/>}/>
           <Route path="/locations" element={<Locations/>} />
           <Route path="/locations/:locationID" element={<ParticularLocation/>} />
           <Route path="/events" element = {<Events title={"Event List"} venueID={""}/>} />
@@ -77,11 +71,87 @@ class App extends React.Component {
     }
 }
 
+class NavBar extends React.Component {
+  constructor(){
+    super()
+    this.navBarCollapseControl = this.navBarCollapseControl.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.state = {
+      navBarCollapse: 'collapse',
+      navBarIndex: 1
+    }
+  }
+
+  handleChange() {
+    this.props.handleChange();
+    console.log('hi')
+  }
+
+  navBarCollapseControl(){
+    if (this.state.navBarIndex){
+      this.setState({navBarCollapse: '', navBarIndex: 0})
+    }else{
+      this.setState({navBarCollapse: 'collapse', navBarIndex: 1})
+    }
+  }
+  render() {
+    return (
+      <nav class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', display: this.props.display}}>
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/" onClick={this.handleChange}>App</a>
+            <button class="navbar-toggler" type="button" onClick={this.navBarCollapseControl} >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class={ this.state.navBarCollapse + " navbar-collapse"} id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+              <Link class="nav-link" to="/admin">Admin</Link>
+              <Link class="nav-link" to="/map">Map</Link>
+              <Link class="nav-link" to="/locations">Locations</Link>
+              <Link class="nav-link" to="/events">Events</Link>
+              {/*<Link class="nav-link" to="/search">Search</Link>*/}
+              </div>
+            </div>
+          </div>
+        </nav>
+    )
+  }
+  }
+
 class Home extends React.Component {
+  constructor(){
+    super()
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange() {
+    this.props.handleChange();
+    console.log('hi')
+  }
     render() {
         return (
             <>
-            <h2>Home</h2>
+            <div style={{
+              position: 'relative',
+              height: "0",
+              zIndex: "-1",}}>
+              <video className='videoTag' autoPlay loop muted style={{width: '100vw', height: '100vh', display:'flex', position: 'sticky'}}>
+              <source src={coverVid} type='video/mp4'/>
+              Your browser does not support the video tag.
+              </video>
+            </div>
+
+            <div>
+              <nav class="content nav flex-column-expand-lg bg-light" style={{marginLeft: '8vw', marginTop: '5vh', display: 'inline-block', padding: '0', position: 'sticky', height: 0}}>
+                <ul class ="navbar-nav">
+                  {/*<li style={{height: '8vh', width: '12vw', justifyContent: 'center', alignItems: 'center', fontSize: '1.5vw', margin: '0.5vh', padding: 0, borderRadius: '2vh', border: 0, position: 'sticky'}}><Link class="nav-link" to="/" >Home</Link></li>*/}
+                  <li style={{height: '8vh', width: '12vw', justifyContent: 'center', alignItems: 'center', fontSize: '1.5vw', margin: '0.5vh', padding: 0, borderRadius: '2vh', border: 0, position: 'sticky'}} onClick={this.handleChange}><Link class="nav-link" to="/admin">Admin</Link></li>
+                  <li style={{height: '8vh', width: '12vw', justifyContent: 'center', alignItems: 'center', fontSize: '1.5vw', margin: '0.5vh', padding: 0, borderRadius: '2vh', border: 0, position: 'sticky'}} onClick={this.handleChange}><Link class="nav-link" to="/map">Map</Link></li>
+                  <li style={{height: '8vh', width: '12vw', justifyContent: 'center', alignItems: 'center', fontSize: '1.5vw', margin: '0.5vh', padding: 0, borderRadius: '2vh', border: 0, position: 'sticky'}} onClick={this.handleChange}><Link class="nav-link" to="/locations">Locations</Link></li>
+                  <li style={{height: '8vh', width: '12vw', justifyContent: 'center', alignItems: 'center', fontSize: '1.5vw', margin: '0.5vh', padding: 0, borderRadius: '2vh', border: 0, position: 'sticky'}} onClick={this.handleChange}><Link class="nav-link" to="/events">Events</Link></li>
+                </ul>
+              </nav> 
+              <h1 style={{marginTop: '90vh', zIndex: '100', float: 'right', paddingRight: '8vw', fontSize: "3vw", color:'purple'}}>Modern Event-Location System</h1>
+            </div>
             </>
         )
     }
@@ -139,8 +209,8 @@ class Map extends React.Component {
       <div class="m-4">
         <h2>Map</h2>
         <hr />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <MapContainer center={[22.35092361814064, 114.12882020299067]} zoom={12} style={{position: 'center', height: '80vh', width: '80vw' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <MapContainer center={[22.35092361814064, 114.12882020299067]} zoom={12} style={{position: 'center', height: '80vh', width: '80vw'}}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -309,13 +379,13 @@ class ParticularLocation extends React.Component {
   render() {
     return (
       <div class="m-4">
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <MapContainer center={[this.state.location.latitude, this.state.location.longitude]} zoom={10} style={{height: '40vh', width: '60vw'}}>
-            <TileLayer
+        <div style={{ display: 'block', justifyContent: 'center' }}>
+          <MapContainer center={[this.state.location.latitude, this.state.location.longitude]} zoom={10} style={{height: '40vh', width: '60vw'}} >
+            <TileLayer 
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
-            <MarkerClusterGroup
+            <MarkerClusterGroup 
               chunkedLoading
             >
               <Marker position={[this.state.location.latitude, this.state.location.longitude]} icon={customIcon}>
