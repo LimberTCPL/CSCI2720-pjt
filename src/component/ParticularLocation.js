@@ -50,7 +50,7 @@ class ParticularLocation extends Component {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         }, 
-        body: JSON.stringify({"locationID": locationID})
+        body: JSON.stringify({'username': this.props.username})
       });
       let data = await response.json();
       return data;

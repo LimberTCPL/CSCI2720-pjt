@@ -87,6 +87,15 @@ db.once('open', function () {
 
   const AdminUser = mongoose.model("AdminUser",AdminUserSchema);
 
+  const FavoriteLocationSchema = mongoose.Schema({
+    user: {type: String, required: true, unique: true},
+    locations: {
+      location: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
+    }
+  })
+
+  const FavoriteLocation = mongoose.model("FavoriteLocation",FavoriteLocationSchema);
+
   /*
   location.find({})
   .then((data) => {
@@ -142,6 +151,17 @@ db.once('open', function () {
       console.log("failed to read");
     }); 
   })
+
+  app.post('/addToFavorite', (req, res) => {
+    Location.find({locationID: req.body.locationID})
+    .then((data) => {
+      
+    })
+    .catch((error) => {
+      console.log("failed to read");
+    }); 
+  })
+
 
   // for the filtered event list
   app.post('/events', (req, res) => {

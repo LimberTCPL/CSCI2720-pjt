@@ -37,8 +37,12 @@ Collections:
     locID: {type: Number, required: true}, //locationID form props
     date: {type: String, requred: true}//need ?
     }
-    Favorite{
-      {
-
+  }
+  Favorite{
+    {
+    user: {type: String, required: true, unique: true},
+    locations: {
+      location: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
+      }
     }
   }
