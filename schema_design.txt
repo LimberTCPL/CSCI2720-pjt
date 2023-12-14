@@ -42,7 +42,7 @@ Collections:
     {
     user: {type: String, required: true, unique: true},
     locations: {
-      location: {type: Number, required: true}
+      location: {type: Array, required: true}
       }
     }
   }
