@@ -41,6 +41,20 @@ class ParticularLocation extends Component {
       let data = await response.json();
       return data;
     }
+
+    async handleClick() {
+      const response = await fetch("http://localhost:5001/addToFavorite", { 
+        method: "POST", 
+        mode: "cors", 
+        headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        }, 
+        body: JSON.stringify({"locationID": locationID})
+      });
+      let data = await response.json();
+      return data;
+    }
   
     /*
     async getEventData(venueID) {
@@ -130,6 +144,7 @@ class ParticularLocation extends Component {
                 </tr>
               </tbody>
             </table>
+            <button onClick={this.handleClick}>Add to Favorite</button>
           </div>
   
           <Events title={`Event List for ${this.state.location.location}`} venueID={this.state.location.locationID} />
