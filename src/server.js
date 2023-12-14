@@ -4,7 +4,6 @@ const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://admin:admin_password@cluster0.a4b2rml.mongodb.net/?retryWrites=true&w=majority";
 app.use(bodyParser.json({ type: ["application/json", "application/csp-report"] }));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
@@ -94,6 +93,32 @@ db.once('open', function () {
   })
 
   const FavoriteLocation = mongoose.model("FavoriteLocation",FavoriteLocationSchema);
+
+    const UserSchema = mongoose.Schema(
+    {
+       username: {
+          type: String,
+          required: [true, "Name is required"],
+          unique: true,
+       },
+       password: {
+          type: String,
+          required: [true, "Password is required"],
+       },
+       role: {
+          type: String,
+          default: 'user',
+       },
+       priKey: {
+          type: String,
+          default: "1357924680",
+       },
+    },
+    { collection: 'userdata' },
+ )
+
+ const User = mongoose.model("userSchema", UserSchema);
+
 
   /*
   location.find({})
@@ -301,100 +326,66 @@ app.get('/listcomment/:locID',(req,res)=>{
   });
 })
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
+//login system
+app.post('/login', (req, res) => {
+  try{
+     User.findOne({ username: req.body.username, password: req.body.password }).then((data) => {
+        if (data) {
+           // generate an accessToken
+           const accessToken = jwt.sign({ userId:data._id, username: data.username, role: data.role }, data.priKey, { expiresIn: '5m' });
+           const refreshToken = jwt.sign({ userId:data._id, username: data.username, role: data.role }, data.priKey);
+           refreshTokenList.push(refreshToken);
+           res.json({
+              accessToken,
+              refreshToken,
+           });
+        }  
+        else {
+           res.status(401).json({ message: 'Username or password incorrect' });
+        }
+     })
+  } catch (err) {
+     console.log(err);
   }
 });
 
-app.post('/login', (req, res) => {
-   async function run() {
-     try {
-        // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
-        // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    
-        const collection = client.db("user").collection("yy");
-        const temp = collection.find({});
-        const cursor = await temp.toArray();
-
-        for (const doc of cursor) {
-           if (doc.username === req.body.username && doc.password === req.body.password) {
-              user = doc
-           }
-        }
-
-        if (!user) {
-           // indicate an insuccessful login 
-           return res.status(401).json({ message: 'Wrong credientials!' });;
-       }
-    
-       // generate accessToken with duration of 5 min and refreshToken with duration of 1 day
-       const accessToken = jwt.sign(
-          { username: user.username, role: user.role }, 
-          user.priKey, 
-          { expiresIn: '5m' }
-       );
-    
-       const refreshToken = jwt.sign(
-          { username: user.username, role: user.role }, 
-          user.priKey, 
-          { expiresIn: '1d' }
-       );
-    
-       // push the refreshToken into the refreshToken array
-       refreshTokenList.push(refreshToken);
-    
-       // send back the respone to client
-       res.json({ accessToken, refreshToken });
-
-       // console.log(user)
-      } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
-      }
-   }
-   run().catch(console.dir);
-});
-
 app.post('/refresh', (req, res) => {
-   const refreshToken = req.body.token;
+const refreshToken = req.body.refreshToken;
 
-   if (!refreshToken) {
-      // if there is no refreshToken, raise unautorized status
-      return res.status(401).json({ message: 'You are not unautorized yet!' });
-   }
+//get username from refreshToken
+const payload = jwt.decode(refreshToken);
 
-   if (!refreshTokenList.includes(refreshToken)) {
-      // if the refreshToken is not included in the array, raise forbidden status
-      return res.status(403).json({ message: 'You are not allowed to access this page!' });;
-   }
 
-   jwt.verify(refreshToken, user.priKey, (err, user) => {
-      if (err) {
-         // if there is some problems in the verification of refreshToken, raise the forbidden status
-         return res.status(403).json({ message: 'You cannot pass the verification!' });;
-      }
+if (!refreshToken) {
+  // if there is no refreshToken, raise unautorized status
+  return res.status(401).json({ message: 'You are not unautorized yet!' });
+}
 
-      // generate a new accessToken if no error occurs
-      const accessToken = jwt.sign({ username: user.username, role: user.role }, user.priKey, { expiresIn: '5m' });
-
-      // send the new accessToken back
-      res.json({ accessToken });
-   });
+if (!refreshTokenList.includes(refreshToken)) {
+  // if the refreshToken is not included in the array, raise forbidden status
+  return res.status(403).json({ message: 'You are not allowed to access this page!' });;
+}
+// get prikey from database
+User.findOne({ username: payload.username }).then((data) => {
+  // verify the refreshToken
+  jwt.verify(refreshToken, data.priKey, (err, user) => {
+     if (err) {
+        // if the refreshToken is not valid, raise forbidden status
+        return res.status(403).json({ message: 'You are not allowed to access this page!' });
+     }
+  })
+  // generate a new accessToken if no error occurs
+  // send the new accessToken back
+  res.json({accessToken: jwt.sign({ userId:data._id, username: data.username, role: data.role }, data.priKey, { expiresIn: '5m' })});
+})
 });
 
 app.post('/logout', (req, res) => {
-   // remove the refeshToken from array to proceed the logout command
-   refreshTokenList = refreshTokenList.filter((token) => token !== req.body.token);
-   user = null;
-   // send back a successful process
-   res.json({ message: 'You have logged out successfully' });
-});
+// remove the refeshToken from array to proceed the logout command
+refreshTokenList = refreshTokenList.filter((token) => token !== req.body.refreshToken);
+// send back a successful process
+res.json({ message: 'You have logged out successfully' });
+});  
 
 //mongodb CRUD
 

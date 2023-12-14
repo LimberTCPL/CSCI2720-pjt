@@ -41,8 +41,7 @@ Collections:
   Favorite{
     {
     user: {type: String, required: true, unique: true},
-    locations: {
-      location: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
+    locations: {type: Array, required: true}
       }
     }
   }
