@@ -28,7 +28,6 @@ class Commentform extends Component{
         locID: this.state.locID,
         date: this.state.date
       }
-      console.log(newcomment)
       
       try {
       const response = await fetch('http://localhost:5001/comment',
@@ -37,10 +36,6 @@ class Commentform extends Component{
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(newcomment)
       });
-
-      if (response.ok) {
-        console.log('ok')
-      }
 
       this.fetchComment();
       } catch (error) {
@@ -64,7 +59,6 @@ class Commentform extends Component{
         method: 'GET',
         });
           let data = await response.json();
-          console.log(data)
           data.forEach(element => {
             tempcomment.push(
               <>
