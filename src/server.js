@@ -237,7 +237,7 @@ app.post('/comment', (req, res) => {
   console.log(newComment)
   newComment.save()
   .then(() => {
-      res.status(201);
+      res.json({ message: 'comment saved!' });
   })
 });
 
