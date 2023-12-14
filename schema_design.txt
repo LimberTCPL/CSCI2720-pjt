@@ -37,4 +37,8 @@ Collections:
     locID: {type: Number, required: true}, //locationID form props
     date: {type: String, requred: true}//need ?
     }
+    Favorite{
+      {
+
+    }
   }
