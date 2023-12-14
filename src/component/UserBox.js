@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import UserEventForm from './UserForm';
-import UserEventList from './UserList';
+import UserForm from './UserForm';
+import UserList from './UserList';
 
 class UserBox extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class UserBox extends Component {
 
   fetchUserEvents = async () => {
     try {
-      const response = await fetch('http://localhost:5001/Adminuserevents');
+      const response = await fetch('http://localhost:5001/users');
       if (response.ok) {
         const data = await response.json();
         this.setState({ userEvents: data });
@@ -31,7 +31,7 @@ class UserBox extends Component {
 
   addUserEvent = async (eventData) => {
     try {
-      const response = await fetch('http://localhost:5001/Adminuserevents', {
+      const response = await fetch('http://localhost:5001/users', {
         method: 'POST',
         body: JSON.stringify(eventData),
         headers: {
@@ -55,7 +55,7 @@ class UserBox extends Component {
 
   deleteUserEvent = async (username) => {
     try {
-      const response = await fetch(`http://localhost:5001/Adminuserevents/${username}`, {
+      const response = await fetch(`http://localhost:5001/users/${username}`, {
         method: 'DELETE',
       });
 
@@ -75,7 +75,7 @@ class UserBox extends Component {
 
   updateUserEvent = async (username, UsereventData) => {
     try {
-      const response = await fetch(`http://localhost:5001/Adminuserevents/${username}`, {
+      const response = await fetch(`http://localhost:5001/users/${username}`, {
         method: 'PUT',
         body: JSON.stringify(UsereventData),
         headers: {
@@ -100,8 +100,8 @@ class UserBox extends Component {
   render() {
     return (
       <>
-        <UserEventForm addUserEvent={this.addUserEvent} />
-        <UserEventList userEvents={this.state.userEvents} deleteUserEvent={this.deleteUserEvent} updateUser={this.updateUserEvent}/>
+        <UserForm addUserEvent={this.addUserEvent} />
+        <UserList userEvents={this.state.userEvents} deleteUserEvent={this.deleteUserEvent} updateUser={this.updateUserEvent}/>
       </>
     );
   }

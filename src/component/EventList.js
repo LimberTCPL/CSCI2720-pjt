@@ -38,8 +38,8 @@ class EventList extends Component {
     const editedEvent = editedEvents.find((editedEvent) => editedEvent._id === event._id);
 
     if (editedEvent) {
-      const { location, quota } = editedEvent;
-      this.props.updateEvent(event._id, { location, quota });
+      const { title,venueID,date,description,presenter,priceInStr,priceInNum } = editedEvent;
+      this.props.updateEvent(event._id, { title,venueID,date,description,presenter,priceInStr,priceInNum });
       this.setState((prevState) => ({
         editedEvents: prevState.editedEvents.filter((e) => e._id !== event._id),
       }));
@@ -65,26 +65,59 @@ class EventList extends Component {
                   <span>
                     Event ID: {event.eventID}
                     <br/> 
-                    Location:{' '}
+                    Event Name:{' '}
                     {editedEvent && editedEvent.isEditing ? (
                       <input
                         type="text"
-                        value={editedEvent.location}
-                        onChange={(e) => this.handleChange(event, 'location', e)}
+                        value={editedEvent.title}
+                        onChange={(e) => this.handleChange(event, 'title', e)}
                       />
                     ) : (
-                      event.location
+                      event.title
                     )}
                     <br/> 
-                    Quota:{' '}
+                    Date and Time:{' '}
                     {editedEvent && editedEvent.isEditing ? (
                       <input
                         type="text"
-                        value={editedEvent.quota}
-                        onChange={(e) => this.handleChange(event, 'quota', e)}
+                        value={editedEvent.date}
+                        onChange={(e) => this.handleChange(event, 'date', e)}
                       />
                     ) : (
-                      event.quota
+                      event.date
+                    )}
+                    <br/> 
+                    Description:{' '}
+                    {editedEvent && editedEvent.isEditing ? (
+                      <input
+                        type="text"
+                        value={editedEvent.description}
+                        onChange={(e) => this.handleChange(event, 'description', e)}
+                      />
+                    ) : (
+                      event.description
+                    )}
+                    <br/> 
+                    Presenter:{' '}
+                    {editedEvent && editedEvent.isEditing ? (
+                      <input
+                        type="text"
+                        value={editedEvent.presenter}
+                        onChange={(e) => this.handleChange(event, 'presenter', e)}
+                      />
+                    ) : (
+                      event.presenter
+                    )}
+                    <br/> 
+                    Price:{' '}
+                    {editedEvent && editedEvent.isEditing ? (
+                      <input
+                        type="text"
+                        value={editedEvent.priceInNum}
+                        onChange={(e) => this.handleChange(event, 'priceInNum', e)}
+                      />
+                    ) : (
+                      event.priceInNum
                     )}
                   </span>
                   {editedEvent && editedEvent.isEditing ? (

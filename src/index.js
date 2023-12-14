@@ -5,12 +5,14 @@ import Cookies from 'js-cookie';
 import Admin from './Admin';
 import User from './User';
 import ReactDOM from 'react-dom'; 
+import Register from './component/Register';
 
 const App = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [username, setUsername] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showRegisrt,setShowRegister] = useState(false);
 
   useEffect(() => {
     // Get the access token from the cookies when the page loads
@@ -91,6 +93,10 @@ const App = () => {
     Cookies.remove('accessToken');
   };
 
+  const handleShowRegister = () => {
+    setShowRegister(true);
+  }
+
   useEffect(() => {
     if (!accessToken) {
       return;
@@ -110,38 +116,50 @@ const App = () => {
 
   return (
     <div>
-      {!accessToken ? (
-        <div id='login' className="row d-flex justify-content-center ">
-          <div className="col-md-8 col-lg-6">
-            <div className="card shadow-0 border">
-              <div className="card-body p-4">
-                <div className="form-outline mb-4">
-                    <label className="form-label"><h2>Login</h2></label>
-                  </div>
-                <form onSubmit={handleLogin}>
+      {!showRegisrt?(
+        <div>
+        {!accessToken ? (
+          <div id='login' className="row d-flex justify-content-center ">
+            <div className="col-md-8 col-lg-6">
+              <div className="card shadow-0 border">
+                <div className="card-body p-4">
+                  <div className="form-outline mb-4">
+                      <label className="form-label"><h2>Login</h2></label>
+                    </div>
+                  <form onSubmit={handleLogin}>
+                    <div className="form-group">
+                      <label for="exampleInputEmail1">User name</label>  
+                      <input type="text" className='form-control' name="username" placeholder="Type your username" />
+                    </div>
                   <div className="form-group">
-                    <label for="exampleInputEmail1">User name</label>  
-                    <input type="text" className='form-control' name="username" placeholder="Type your username" />
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" className='form-control' name="password" placeholder="Type your password" />
                   </div>
-                <div className="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" className='form-control' name="password" placeholder="Type your password" />
+                  <button type="submit">Login</button>
+                </form>
+                <p>
+          Don't have an account?{" "}
+          <button onClick={handleShowRegister}>Register</button> 
+        </p>
                 </div>
-                <button type="submit">Login</button>
-              </form>
               </div>
             </div>
           </div>
+
+        ) : (
+          <>
+            {isAdmin ? (
+
+              <Admin username={username} handleLogout={handleLogout} />
+            ) : (
+              <User name="Map for Cultural Programmes" username={username} handleLogout={handleLogout} />
+            )}
+          </>
+        )}
         </div>
-
-      ) : (
+      ):(
         <>
-          {isAdmin ? (
-
-            <Admin username={username} handleLogout={handleLogout} />
-          ) : (
-            <User name="Map for Cultural Programmes" username={username} handleLogout={handleLogout} />
-          )}
+          <Register/>
         </>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class UserEventList extends Component {
+class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,8 +37,8 @@ class UserEventList extends Component {
     const editedEvent = editedEvents.find((editedEvent) => editedEvent.username === event.username);
 
     if (editedEvent) {
-      const { username, password } = editedEvent;
-      this.props.updateUser(event.username, { username, password });
+      const { username, password,role } = editedEvent;
+      this.props.updateUser(event.username, { username, password,role });
       this.setState((prevState) => ({
         editedEvents: prevState.editedEvents.filter((e) => e.username !== event.username),
       }));
@@ -72,6 +72,17 @@ class UserEventList extends Component {
                     ) : (
                       event.password
                     )}
+                    <br/>
+                    Role:{' '}
+                    {editedEvent && editedEvent.isEditing ? (
+                      <input
+                        type="text"
+                        value={editedEvent.role}
+                        onChange={(e) => this.handleChange(event, 'role', e)}
+                      />
+                    ) : (
+                      event.role
+                    )}
                   </span>
                   {editedEvent && editedEvent.isEditing ? (
                     <button onClick={() => this.handleSave(event)}>Save & Update</button>
@@ -89,4 +100,4 @@ class UserEventList extends Component {
   }
 }
 
-export default UserEventList;
+export default UserList;

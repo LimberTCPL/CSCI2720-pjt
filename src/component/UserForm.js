@@ -1,12 +1,13 @@
-import React,  { Component } from 'react';
+import React, { Component } from 'react';
 
-class EventForm extends Component {
-  
+class UserForm extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
+      role: '',
     };
   }
 
@@ -16,10 +17,10 @@ class EventForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { username, password} = this.state;
-    if (username.trim() && password.trim() ) {
-      this.props.addUserEvent({ username, password});
-      this.setState({ username: '', password: ''});
+    const { username, password, role } = this.state;
+    if (username.trim() && password.trim() && role.trim()) {
+      this.props.addUserEvent({ username, password, role });
+      this.setState({ username: '', password: '', role: '' });
     } else {
       alert('Please fill in all the fields');
     }
@@ -49,10 +50,33 @@ class EventForm extends Component {
             onChange={this.handleChange}
           />
         </div>
-        <button type="submit">Create</button>
+        <div className='form-group' style={{display: 'inline-block',padding: '5px'}}>
+          <input
+            type="radio"
+            id="admin"
+            name="role"
+            value="Admin"
+            checked={this.state.role === "Admin"}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="admin">Admin</label>
+        </div>
+
+        <div className='form-group' style={{display: 'inline-block'}}>
+          <input
+            type="radio"
+            id="user"
+            name="role"
+            value="User"
+            checked={this.state.role === "User"}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="user">User</label>
+        </div>
+        <button type="submit" style={{display: 'block'}} >Create</button>
       </form>
     );
   }
 }
 
-export default EventForm;
+export default UserForm;

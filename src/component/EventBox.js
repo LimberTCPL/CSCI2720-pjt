@@ -18,7 +18,7 @@ class EventBox extends Component {
 
   fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:5001/Adminevents');
+      const response = await fetch('http://localhost:5001/adminevents');
       if (response.ok) {
         const data = await response.json();
         this.setState({ events: data });
@@ -33,7 +33,7 @@ class EventBox extends Component {
 
   addEvent = async (eventData) => {
     try {
-      const response = await fetch('http://localhost:5001/Adminevents', {
+      const response = await fetch('http://localhost:5001/adminevents', {
         method: 'POST',
         body: JSON.stringify(eventData),
         headers: {
@@ -57,7 +57,7 @@ class EventBox extends Component {
 
   deleteEvent = async (eventId) => {
     try {
-      const response = await fetch(`http://localhost:5001/Adminevents/${eventId}`, {
+      const response = await fetch(`http://localhost:5001/adminevents/${eventId}`, {
         method: 'DELETE',
       });
 
@@ -77,7 +77,7 @@ class EventBox extends Component {
 
   updateEvent = async (eventId, eventData) => {
     try {
-      const response = await fetch(`http://localhost:5001/Adminevents/${eventId}`, {
+      const response = await fetch(`http://localhost:5001/adminevents/${eventId}`, {
         method: 'PUT',
         body: JSON.stringify(eventData),
         headers: {
