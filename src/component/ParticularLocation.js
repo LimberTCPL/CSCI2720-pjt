@@ -13,8 +13,9 @@ const customIcon = new Icon({
 })
 
 class ParticularLocation extends Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
+      this.handleClick = this.handleClick.bind(this)
       this.state = {
         location:{
           locationID: 0,
@@ -24,7 +25,8 @@ class ParticularLocation extends Component {
           eventCount: 0
         },
         events:[],
-        comments:{}
+        comments:{},
+        username: this.props.username
       }
     }
   
@@ -43,17 +45,39 @@ class ParticularLocation extends Component {
     }
 
     async handleClick() {
-      const response = await fetch("http://localhost:5001/addToFavorite", { 
+      await fetch("http://localhost:5001/addToFavorite", { 
         method: "POST", 
         mode: "cors", 
         headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         }, 
-        body: JSON.stringify({'username': this.props.username})
+        body: JSON.stringify(
+          {
+            'username': this.state.username,
+            'locationID': this.state.location.locationID
+          }
+          )
       });
+    }
+
+    async isFavorite(locationID) {
+      const response = await fetch("http://localhost:5001/isFavorite", { 
+        method: "POST", 
+        mode: "cors", 
+        headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        }, 
+        body: JSON.stringify({
+          'username': this.state.username,
+          'locationID': locationID
+        })
+      })
       let data = await response.json();
       return data;
+
+      
     }
   
     /*
@@ -81,8 +105,7 @@ class ParticularLocation extends Component {
           latitude: data.latitude,
           longitude: data.longitude,
           eventCount: data.eventCount
-        }})
-  
+          }})
         /*
         this.getEventData(data._id).then((eventsInVenue) => {
           //want to process the event data to display in the particular event
@@ -103,6 +126,10 @@ class ParticularLocation extends Component {
         })
         */
       })
+      this.isFavorite(locationID).then((data) => {
+        console.log(data.locations``)
+      }
+      )
     }
   
     render() {

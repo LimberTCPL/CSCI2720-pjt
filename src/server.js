@@ -89,9 +89,8 @@ db.once('open', function () {
 
   const FavoriteLocationSchema = mongoose.Schema({
     user: {type: String, required: true, unique: true},
-    locations: {
-      location: {type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true}
-    }
+    locations: {type: Array, required: true}
+    
   })
 
   const FavoriteLocation = mongoose.model("FavoriteLocation",FavoriteLocationSchema);
@@ -153,12 +152,28 @@ db.once('open', function () {
   })
 
   app.post('/addToFavorite', (req, res) => {
-    Location.find({locationID: req.body.locationID})
+    FavoriteLocation.updateOne(
+      {user: req.body.username},
+      { $addToSet: {locations: req.body.locationID}},
+      { upsert: true })
     .then((data) => {
-      
+      console.log('added')
     })
     .catch((error) => {
-      console.log("failed to read");
+    }); 
+  })
+
+  app.post('/isFavorite', (req, res) => {
+    const username  = req.body.username
+    const locationID = req.body.locationID
+    FavoriteLocation.find({user: {$eq: username}})
+    .then((data) => {
+      let response = data[0];
+    console.log(response)
+      res.send(response);
+    })
+    .catch((error) => {
+      console.log('no')
     }); 
   })
 
