@@ -1,0 +1,17 @@
+.homeNavButtons {
+    color: #3d5354;  
+    height: auto;
+    width: 12vw;
+    aspect-ratio: 3/2;
+    justify-Content: center;
+    align-items: center;
+    font-size: 2vw;
+    font-weight: 500;
+    margin: 0.5vh;
+    padding: 0;
+    border-radius: 2vh;
+    border: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: #baccd9;
+}

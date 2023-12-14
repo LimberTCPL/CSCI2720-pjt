@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {  Link} from 'react-router-dom';
 import '../style.css';
+import icon from '../img/icon.png';
 
 class NavBar extends Component {
     constructor(){
@@ -27,9 +28,9 @@ class NavBar extends Component {
     }
     render() {
       return (
-        <nav class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', display: this.props.display}}>
+        <nav id='verNav' class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', display: this.props.display}}>
             <div class="container-fluid">
-              <a class="navbar-brand" href="/" onClick={this.handleChange}>App</a>
+              <a class="navbar-brand" href="/" onClick={this.handleChange}><img src={icon}  width="35px" height="auto" style={{margin: 0}}/></a>
               <button class="navbar-toggler" type="button" onClick={this.navBarCollapseControl} >
                 <span class="navbar-toggler-icon"></span>
                 </button>
