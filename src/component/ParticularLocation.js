@@ -106,6 +106,7 @@ class ParticularLocation extends Component {
     }
   
     render() {
+        const {username} = this.props;
       return (
         <div class="m-4">
           <div style={{ display: 'flex', justifyContent: 'center' }}>
