@@ -165,8 +165,8 @@ class ParticularLocation extends Component {
           </table>
           */}
           
-          <Commentlist locationID={this.state.location.locationID}/>
-          <Commentform locationID={this.state.location.locationID}/>
+
+          <Commentform locationID={this.state.location.locationID} username={username}/>
         </div>
       )
     }

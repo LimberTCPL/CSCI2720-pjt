@@ -62,7 +62,7 @@ class User extends React.Component {
           <Route path="/" element={<Home handleChange={this.handleChange} />}/>
           <Route path="/map" element={<Map/>}/>
           <Route path="/locations" element={<Locations/>} />
-          <Route path="/locations/:locationID" element={<ParticularLocation/>} />
+          <Route path="/locations/:locationID" element={<ParticularLocation username={username}/>} />
           <Route path="/events" element = {<Events title={"Event List"} venueID={""}/>} />
           <Route path="/search" element={<Search/>} />
           <Route path="*" element={<NoMatch/>} />
