@@ -111,11 +111,28 @@ const App = () => {
   return (
     <div>
       {!accessToken ? (
-            <form onSubmit={handleLogin}>
-          <input type="text" name="username" placeholder="Type your username" />
-          <input type="password" name="password" placeholder="Type your password" />
-          <button type="submit">Login</button>
-        </form>
+        <div id='login' className="row d-flex justify-content-center ">
+          <div className="col-md-8 col-lg-6">
+            <div className="card shadow-0 border">
+              <div className="card-body p-4">
+                <div className="form-outline mb-4">
+                    <label className="form-label"><h2>Login</h2></label>
+                  </div>
+                <form onSubmit={handleLogin}>
+                  <div className="form-group">
+                    <label for="exampleInputEmail1">User name</label>  
+                    <input type="text" className='form-control' name="username" placeholder="Type your username" />
+                  </div>
+                <div className="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" className='form-control' name="password" placeholder="Type your password" />
+                </div>
+                <button type="submit">Login</button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
       ) : (
         <>
