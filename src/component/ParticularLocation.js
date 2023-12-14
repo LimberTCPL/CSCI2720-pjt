@@ -4,7 +4,7 @@ import { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import Events from './Event';
 import Commentform from './Commentform';
-import Commentlist from './Commentlist';
+
 import '../style.css';
 
 const customIcon = new Icon({
