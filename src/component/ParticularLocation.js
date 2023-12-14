@@ -127,7 +127,7 @@ class ParticularLocation extends Component {
         */
       })
       this.isFavorite(locationID).then((data) => {
-        console.log(data.locations``)
+        console.log(data.locations)
       }
       )
     }
