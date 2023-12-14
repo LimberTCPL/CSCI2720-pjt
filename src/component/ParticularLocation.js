@@ -114,7 +114,7 @@ class ParticularLocation extends Component {
   
           <div class="m-4">
             <h2>Location Details</h2>
-            <table class="table table-bordered table-striped table-sm table-primary">
+            <table class="table table-bordered table-striped table-sm table-light">
               <tbody>
                 <tr>
                   <th scope="row">Location:</th>

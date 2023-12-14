@@ -50,7 +50,7 @@ class Locations extends Component {
         <div class="m-4">
           <h2>Location List</h2>
           <hr />
-          <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-primary">
+          <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-light">
             <thead>
               <tr>
                 <th class="text-center">Locations</th>

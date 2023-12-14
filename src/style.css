@@ -24,6 +24,10 @@ table.dataTable thead .sorting_desc_disabled:before {
   bottom: .5em;
 }
 
+.dataTables_filter input[type="search"] {
+  background-color: white;
+}
+
 
 .event-form {
   max-width: 400px;

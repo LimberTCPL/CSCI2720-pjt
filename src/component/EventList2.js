@@ -41,7 +41,7 @@ class EventList2 extends Component {
     render() {
       return (
         <div>
-          <table id="eventTable" class="table table-bordered table-striped table-sm table-primary">
+          <table id="eventTable" class="table table-bordered table-striped table-sm table-light">
             <thead>
               <tr>
                 <th class="text-center">Event Name</th>
