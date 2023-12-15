@@ -205,7 +205,7 @@ db.once('open', function () {
       })
       .catch((error) => {
         console.log(error);
-        ssres.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
       });
     console.log(locationList)
 
