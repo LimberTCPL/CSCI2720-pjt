@@ -12,6 +12,7 @@ Initial setup:
 Starting the server:
 1. Open the terminal and CD to the file
 2. Start the Node.js server running on port 5001 by running: node src/server.js
-3. Open another terminal and CD to the file
-3. Start the npm server running on port 3000 by running: npm start
-4. Browse the app in your web browser at http://localhost:3000/
+3. Import JSON file from datajson/project.userdata.json to the collection (userdata) in local        mongodb(mongodb://localhost:27017/project)
+4. Open another terminal and CD to the file
+5. Start the npm server running on port 3000 by running: npm start
+6. Browse the app in your web browser at http://localhost:3000/
