@@ -17,4 +17,4 @@ Starting the server:
 2. Open another terminal and CD to the file
 3. Start the npm server running on port 3000 by running: npm start
 4. Browse the app in your web browser at http://localhost:3000/
-5. Login as User with(username: user,password: password),Admin with (username: admin,password: password)
+5. Login as User with (username: user, password: password), Admin with (username: admin, password: password)
