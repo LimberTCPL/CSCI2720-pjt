@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../style.css';
 import icon from '../img/icon.png';
 

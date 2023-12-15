@@ -146,6 +146,7 @@ db.once('open', function () {
       });
   })
 
+//for favourite locations
   app.post('/addToFavorite', (req, res) => {
     FavoriteLocation.updateOne(
       { user: req.body.username },
@@ -175,20 +176,39 @@ db.once('open', function () {
     FavoriteLocation.find({ user: { $eq: username } })
       .then((data) => {
         let response = data[0];
-        if (!response) {
-          response = JSON.parse({locations: []})
-          console.log('yes')
-        }
-        
-        console.log(response)
+        if (!response) {response = JSON.parse({locations: []})}
         res.send(response);
       })
       .catch((error) => {
-        console.log('no')
         const response = JSON.stringify({locations: []})
-        console.log(response)
         res.send(response)
       });
+  })
+
+  app.post('/favoriteLocations', (req, res) => {
+    const username = req.body.username
+    console.log(username)
+    let locationList = []
+    FavoriteLocation.findOne({ user: { $eq: username } })
+      .then((data) => {
+        locationList = data.locations;
+        if (!locationList) {locationList = []}
+        Location.find({ locationID: { $in: locationList } })
+          .then((data) => {
+            console.log(data)
+            res.send(data);
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error: 'Internal server error' });
+          })
+      })
+      .catch((error) => {
+        console.log(error);
+        ssres.status(500).json({ error: 'Internal server error' });
+      });
+      console.log(locationList)
+    
   })
 
 

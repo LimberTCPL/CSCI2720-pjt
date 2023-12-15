@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import '../style.css';
 
-class Locations extends Component {
+class FavoriteList extends Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        locations: [],
-      };
+        super(props);
+        this.state = {
+          locations: [],
+          username: this.props.username,
+        }
     }
-  
     componentDidMount() {
       this.fetchLocations();
     }
@@ -20,7 +20,17 @@ class Locations extends Component {
     }
     
     async fetchLocations() {
-      fetch('http://localhost:5001/locations')
+      fetch('http://localhost:5001/favoriteLocations', { 
+        method: "POST", 
+        mode: "cors", 
+        headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        }, 
+        body: JSON.stringify({
+          'username': this.state.username,
+        })
+      })
       .then((response) => response.json())
       .then((data) => {
         this.setState({ locations: data }, () => {
@@ -49,8 +59,8 @@ class Locations extends Component {
     render() {
       return (
         <div class="m-4">
-          <h2>Location List</h2>
-          <hr /><Link style={{display:'inline-block'}} to="/favorite" ><button type="button">Click Here to see you favorite locations</button></Link>
+          <h2>Favorite Location List</h2>
+          <hr /><Link style={{display:'inline-block'}} to="/locations" ><button type="button">Go Back to Location List</button></Link>
           <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-light">
             <thead>
               <tr>
@@ -64,6 +74,8 @@ class Locations extends Component {
         </div>
       )
     }
-  }
-  
-export default Locations;
+}
+
+
+
+export default FavoriteList;

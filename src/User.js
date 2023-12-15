@@ -8,6 +8,7 @@ import ParticularLocation from './component/ParticularLocation';
 import Events from './component/Event';
 import Search from './component/Search';
 import NavBar from './component/NavBar';
+import FavoriteList from './component/FavoriteList';
 
 
 import "leaflet/dist/leaflet.css";
@@ -63,6 +64,7 @@ class User extends React.Component {
           <Route path="/map" element={<Map/>}/>
           <Route path="/locations" element={<Locations/>} />
           <Route path="/locations/:locationID" element={<ParticularLocation username={username}/>} />
+          <Route path="/favorite" element={<FavoriteList username={username}/>} />
           <Route path="/events" element = {<Events title={"Event List"} venueID={""}/>} />
           <Route path="/search" element={<Search/>} />
           <Route path="*" element={<NoMatch/>} />
