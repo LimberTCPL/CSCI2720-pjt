@@ -123,7 +123,7 @@ const App = () => {
               <div className="col-md-8 col-lg-6">
                 <div className="card shadow-0 border">
                   <div className="card-body p-4">
-                    <div className="form-outline mb-4">
+                    <div className="form-outline">
                       <label className="form-label"><h2>Login</h2></label>
                     </div>
                     <form onSubmit={handleLogin}>
@@ -135,8 +135,10 @@ const App = () => {
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" className='form-control' name="password" placeholder="Type your password" />
                       </div>
-                      <button type="submit" style={{ padding: '5px', margin: '5px' }}>Login</button>
-                      <button type="button" style={{  padding: '5px', margin: '5px' }} onClick={handleShowRegister}>Register</button>
+                      <div style={{ display: "flex", justifyContent: "center", margin: '20px' }}>
+                        <button type="submit" style={{ padding: '5px', margin: '5px' }}>Login</button>
+                        <button type="button" style={{  padding: '5px', margin: '5px' }} onClick={handleShowRegister}>Register</button>
+                      </div>
                     </form>
                   </div>
                 </div>
