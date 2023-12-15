@@ -42,8 +42,8 @@ class NavBar extends Component {
               <Link class="nav-link" to="/events">Events</Link>
               <div style = {{ position : "absolute", top: 0, right: '60pt', maxWidth: '50vw'}}>
                 <div>Welcome Back! {username} </div>
-                <button onClick = { handleLogout }>Logout</button>
-          </div>
+                  <button onClick = { handleLogout } style={{marginLeft: 'auto', marginRight: 0}}>Logout</button>
+                </div>
               {/*<Link class="nav-link" to="/search">Search</Link>*/}
               </div>
             </div>
