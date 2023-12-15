@@ -53,15 +53,15 @@ class EventList extends Component {
     return (
       
       events && events.length > 0 && (
-        <div class="evet-list">
+        <div class="evet-list" style={{ width: '50vw' }}>
           <h2 style={{ textAlign: 'center' }}>Events:</h2>
           <br/>
-          <ul class="list-group">
+          <ul class="list-group" style={{ textAlign: 'center'}}>
             {events.map((event) => {
               const editedEvent = editedEvents.find((editedEvent) => editedEvent._id === event._id);
 
               return (
-                <li key={event._id}>
+                <li key={event._id} style={{width: '45vw'}}>
                   <span>
                     Event ID: {event.eventID}
                     <br/> 

@@ -120,8 +120,18 @@ class EventBox extends Component {
   render() {
     return (
       <>
-        <EventForm locations={this.state.locations} addEvent={this.addEvent} />
-        <EventList events={this.state.events} deleteEvent={this.deleteEvent} updateEvent={this.updateEvent}/>
+        <div class="container">
+          <div class="row">
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <EventForm locations={this.state.locations} addEvent={this.addEvent}/>
+            </div>
+            <div class="col-6">
+              <EventList events={this.state.events} deleteEvent={this.deleteEvent} updateEvent={this.updateEvent}/>
+            </div>
+          </div>
+        </div>
       </>
     );
   }

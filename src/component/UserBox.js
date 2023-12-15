@@ -100,8 +100,18 @@ class UserBox extends Component {
   render() {
     return (
       <>
-        <UserForm addUserEvent={this.addUserEvent} />
-        <UserList userEvents={this.state.userEvents} deleteUserEvent={this.deleteUserEvent} updateUser={this.updateUserEvent}/>
+      <div class="container">
+        <div class="row">
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <UserForm addUserEvent={this.addUserEvent} />
+          </div>
+          <div class="col-6">
+            <UserList userEvents={this.state.userEvents} deleteUserEvent={this.deleteUserEvent} updateUser={this.updateUserEvent}/>
+          </div>
+        </div>
+      </div>
       </>
     );
   }

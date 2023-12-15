@@ -28,7 +28,7 @@ class UserForm extends Component {
 
   render() {
     return (
-      <form className="event-form" onSubmit={this.handleSubmit}>
+      <form className="event-form" onSubmit={this.handleSubmit} style={{width: '20vw'}}>
         <h2>Edit User</h2>
         <div className='form-group'>
           <label htmlFor="username">username:</label>

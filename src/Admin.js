@@ -17,8 +17,8 @@ class Admin extends Component {
       <>
         <h1>Admin Management System</h1>
         <BrowserRouter>
+        <div style={{leftMargin: '0'}}>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
@@ -35,6 +35,7 @@ class Admin extends Component {
                 <button onClick = { handleLogout }>Logout</button>
               </div>
         </nav>
+      </div>
 
         <Routes>
           <Route path="/" element={<EventBox />} />

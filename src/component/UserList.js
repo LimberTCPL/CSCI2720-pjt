@@ -51,14 +51,14 @@ class UserList extends Component {
 
     return (
       userEvents && userEvents.length > 0 && (
-        <div class="evet-list">
+        <div class="evet-list" style={{width: '50vw', position: 'absolute'}}>
           <h2 style={{ textAlign: 'center' }}>User:</h2>
           <ul class="list-group">
             {userEvents.map((event) => {
               const editedEvent = editedEvents.find((editedEvent) => editedEvent.username === event.username);
 
               return (
-                <li class="list-group-item" key={event.username}>
+                <li class="list-group-item" key={event.username} style={{width: '45vw'}}>
                   <span>
                     Username: {event.username}
                     <br/>
