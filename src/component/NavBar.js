@@ -52,10 +52,16 @@ class NavBar extends Component {
               <Link class="nav-link" to="/map">Map</Link>
               <Link class="nav-link" to="/locations">Locations</Link>
               <Link class="nav-link" to="/events">Events</Link>
-              <div style = {{ position : "absolute", top: 0, right: '60pt', maxWidth: '50vw' }}>
-                <div>Welcome Back! {username} </div>
-                <button onClick = { handleLogout } style={{backgroundColor: '#e89c3f'}}>Logout</button>
-          </div>
+              <div style = {{ position : "absolute", top: 0, right: '60pt', maxWidth: '50vw', display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div>Last Updated Time: {this.state.updatedTime}</div>
+                <div style={{ display: "flex", alignmItems: "center" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ marginRight: "10px"}}>Welcome Back!</div>
+                    <div>{username} </div>
+                  </div>
+                  <button onClick = { handleLogout } style={{ marginLeft: "auto", padding: "3px", margin: "3px", height: "80%", backgroundColor: '#e89c3f'}}>Logout</button>
+                </div>
+              </div>
               {/*<Link class="nav-link" to="/search">Search</Link>*/}
               </div>
             </div>
