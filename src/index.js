@@ -91,6 +91,7 @@ const App = () => {
     setIsAdmin(false);
 
     Cookies.remove('accessToken');
+    window.location.replace("http://localhost:3000/");
   };
 
   const handleShowRegister = () => {
