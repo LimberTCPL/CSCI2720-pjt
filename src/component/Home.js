@@ -39,9 +39,9 @@ class Home extends Component {
                       <li class={styles.homeNavButtons} onClick={this.handleChange}><Link class="nav-link" to="/events">Events</Link></li>
                     </ul>
                   </nav> 
-                  <h1 style={{marginTop: '90vh', zIndex: '100', float: 'right', paddingRight: '8vw', fontSize: "3vw", color:'purple'}}>Modern Event-Location System</h1>
+                  <h1 style={{fontFamily: 'Lobster, sans-serif', marginTop: '90vh', zIndex: '100', float: 'right', paddingRight: '8vw', fontSize: "3vw", color:'purple'}}>Modern Event-Location System</h1>
                   <div style={{position: 'absolute', marginTop: '70vh', marginLeft: '8.3vw', zIndex: '100', float: 'right', fontSize: '8vh', padding: 0}}>
-                    <button onClick = { handleLogout }><i class="bi bi-box-arrow-left" ></i></button>
+                    <button onClick = { handleLogout } style={{height: '12vh', width: '12vh', backgroundColor: '#e89c3f'}}><i class="bi bi-box-arrow-left" style={{padding: 0}}></i></button>
                   </div>
                   
                 </div>
