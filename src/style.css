@@ -2,7 +2,7 @@ body {
   overflow-x: hidden; /* Hide scrollbars */
   background-image: url("/src/img/bgImg.jpg");
   background-repeat: repeat;
-  font-family: "Lucida Console","Monospace";
+  font-family: 'Lexend Deca', sans-serif;
 }
 
 /* map container */
