@@ -10,6 +10,7 @@ class Register extends Component {
     }
 
     addUserEvent = async (eventData) => {
+        let isValid = 0;
         try {
             const response = await fetch('http://localhost:5001/register', {
                 method: 'POST',
@@ -18,19 +19,22 @@ class Register extends Component {
                     'Content-Type': 'application/json',
                 },
             });
-
             if (response.ok) {
                 const result = await response.json();
                 console.log(result);
                 alert('User created successfully');
                 this.fetchUserEvents();
+                isValid = 1;
             } else {
+                alert('The username has been registered')
                 throw new Error('Failed to create user event');
+                
             }
         } catch (error) {
             console.error(error);
-            alert('The username has been registered');
+            
         }
+        
     };
 
     handleChange = (e) => {
