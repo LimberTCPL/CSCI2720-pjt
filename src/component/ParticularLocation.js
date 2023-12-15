@@ -45,24 +45,50 @@ class ParticularLocation extends Component {
       return data;
     }
 
-    async handleClick() {
+    async addToFav() {
       await fetch("http://localhost:5001/addToFavorite", { 
-        method: "POST", 
-        mode: "cors", 
-        headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        }, 
-        body: JSON.stringify(
-          {
-            'username': this.state.username,
-            'locationID': this.state.location.locationID
-          }
-          )
-      });
+      method: "POST", 
+      mode: "cors", 
+      headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      }, 
+      body: JSON.stringify(
+        {
+          'username': this.state.username,
+          'locationID': this.state.location.locationID
+        }
+      )
+    })}
+
+    async removeFromFav() {
+      await fetch("http://localhost:5001/removeFromFavorite", { 
+      method: "POST", 
+      mode: "cors", 
+      headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      }, 
+      body: JSON.stringify(
+        {
+          'username': this.state.username,
+          'locationID': this.state.location.locationID
+        }
+      )
+      })
     }
 
-    async isFavorite() {
+    handleClick() {
+      if (this.state.favButton == 'Add To Favorite'){
+        this.addToFav()
+        this.setState({favButton: 'Remove From Favorite'})
+      }else{
+        this.removeFromFav()
+        this.setState({favButton: 'Add To Favorite'})
+      }
+    }
+
+    async getFavoriteList() {
       const response = await fetch("http://localhost:5001/favoriteList", { 
         method: "POST", 
         mode: "cors", 
@@ -76,6 +102,19 @@ class ParticularLocation extends Component {
       })
       let data = await response.json();
       return data;
+    }
+
+    favButton(locationID) {
+      this.getFavoriteList(locationID).then((data) => {
+        const favLocations = data.locations
+        
+        favLocations.forEach(id => {
+          
+          if (id == locationID){
+            this.setState({favButton: 'Remove From Favorite'})
+          }
+        });
+      })
     }
   
     /*
@@ -124,15 +163,7 @@ class ParticularLocation extends Component {
         })
         */
       })
-      this.isFavorite(locationID).then((data) => {
-        const favLocations = data.locations
-        console.log(favLocations)
-        if (favLocations.includes(locationID)){
-          console.log('yes')
-          this.setState({favButton: 'Remove From Favorite'})
-        }
-      }
-      )
+      this.favButton(locationID)
     }
   
     render() {

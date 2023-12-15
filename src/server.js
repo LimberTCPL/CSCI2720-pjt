@@ -158,16 +158,36 @@ db.once('open', function () {
       });
   })
 
+  app.post('/removeFromFavorite', (req, res) => {
+    FavoriteLocation.updateOne(
+      { user: req.body.username },
+      { $pull: { locations: {$eq: req.body.locationID} } }
+      )
+      .then((data) => {
+        console.log('removed')
+      })
+      .catch((error) => {
+      });
+  })
+
   app.post('/favoriteList', (req, res) => {
     const username = req.body.username
     FavoriteLocation.find({ user: { $eq: username } })
       .then((data) => {
         let response = data[0];
+        if (!response) {
+          response = JSON.parse({locations: []})
+          console.log('yes')
+        }
+        
         console.log(response)
         res.send(response);
       })
       .catch((error) => {
         console.log('no')
+        const response = JSON.stringify({locations: []})
+        console.log(response)
+        res.send(response)
       });
   })
 
