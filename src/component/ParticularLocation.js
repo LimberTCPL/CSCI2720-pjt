@@ -29,7 +29,9 @@ class ParticularLocation extends Component {
         username: this.props.username,
         favButton: 'Add To Favorite',
         favButtonIcon: '',
-        favButtonColor: '#95b6f0'
+        favButtonColor: '#95b6f0',
+        favButtonIsDisable: 0,
+        favButtonCount: 0
       }
     }
   
@@ -81,6 +83,16 @@ class ParticularLocation extends Component {
     }
 
     handleClick() {
+      if (this.state.favButtonCount > 3){
+        if (window.confirm("Too many actions, refresh to preform action.")) {
+          window.location.reload();
+        } else {
+          
+        }
+        return
+      }
+      this.setState({favButtonIsDisable: 1})
+      this.setState({favButtonCount: this.state.favButtonCount + 1})
       if (this.state.favButton == 'Add To Favorite'){
         this.addToFav()
         this.setState({
@@ -96,6 +108,9 @@ class ParticularLocation extends Component {
           favButtonColor: '#95b6f0'
         })
       }
+      setTimeout(() =>{
+        this.setState({favButtonIsDisable: 0})
+      }, 500)
     }
 
     async getFavoriteList() {
@@ -221,7 +236,7 @@ class ParticularLocation extends Component {
                 </tr>
               </tbody>
             </table>
-            <button onClick={this.handleClick} style={{backgroundColor: this.state.favButtonColor}}>{this.state.favButton} <i class={`bi bi-heart${this.state.favButtonIcon}`} style={{color: '#fc474d'}}></i></button>
+            <button disabled={this.state.favButtonIsDisable} onClick={this.handleClick} style={{backgroundColor: this.state.favButtonColor}}>{this.state.favButton} <i class={`bi bi-heart${this.state.favButtonIcon}`} style={{color: '#fc474d'}}></i></button>
           </div>
   
           <Events title={`Event List for ${this.state.location.location}`} venueID={this.state.location.locationID} />

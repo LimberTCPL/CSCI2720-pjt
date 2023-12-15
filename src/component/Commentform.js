@@ -20,8 +20,8 @@ class Commentform extends Component{
   
     async handleSubmit(e) {
       e.preventDefault();
-      await this.setState({locID: this.props.locationID});
-      await this.setState({date: new Date().toLocaleString(),});
+      this.setState({locID: this.props.locationID});
+      this.setState({date: new Date().toLocaleString(),});
       const newcomment = {
         comment: this.state.comment,
         username: this.props.username,
@@ -103,7 +103,7 @@ class Commentform extends Component{
         <h6>Leave your comment:</h6>
         <form id="comment" onSubmit={this.handleSubmit} >
           <div className="mb-3">
-          <textarea type="text" className="form-control" name="comment" onChange={this.handleChange} placeholder="Share your thought" />
+          <textarea type="text" className="form-control" name="comment" onChange={this.handleChange} placeholder="Share your thought" required/>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
