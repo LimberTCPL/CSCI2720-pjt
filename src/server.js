@@ -402,8 +402,48 @@ db.once('open', function () {
 
   app.post('/adminevents', async (req, res) => {
     const { title, date, venueID, description, presenter, priceInStr } = req.body;
-    const eventID = 1;
-    const priceInNum = parseInt(priceInStr);
+
+    let eventID;
+    Event.find({})
+    .sort({ eventID: -1 })
+    .limit(1)
+    .exec()
+    .then((latestEvent) => {
+      eventID = parseInt(latestEvent[0].eventID) + 1;
+    })
+
+    //const eventID = 1;
+    //const priceInNum = parseInt(priceInStr);
+    const priceInNum = [];
+    
+    // Find out the price (in an array of numbers) according to the price (in string) given
+    if (priceInStr) { // The price of the event is given
+      if (priceInStr.includes("Free") || priceInStr.includes("free")) { // The price is said to be free
+        priceInNum.push(0);
+      }
+
+      const regEx1 = /\$\d+/g; // With dollar signs $, and without thousands separators ,
+      const regEx2 = /\$\d{1,3}(?:,\d{3})*/g; // With dollar signs $, and with thousands separators ,
+      const regEx3 = /[,;]\s\d+/g; // Without dollar signs $ for the middle parts, and without thousands separators ,
+
+      if (/.*\$\d+(?:[,;]\s\d+)+/.test(priceInStr)) { // Test: True when there is only one $ at the beginning, while , or ; separates the prices
+        priceInNum.push(...priceInStr.match(regEx1).concat(priceInStr.match(regEx3)).map(prices => prices.replace(/[\s$,;]/g, '')));
+      } else if (/.*\$\d{1,3}(?:,\d{3})+/.test(priceInStr)) { // Test: True when there are thousands separators in the price
+        priceInNum.push(...priceInStr.match(regEx2).map(prices => prices.replace(/[\s$,;]/g, '')));
+      } else if (/.*\$\d+/.test(priceInStr)) { // Test: True when there is dollar sign
+        priceInNum.push(...priceInStr.match(regEx1).map(prices => prices.replace(/[\s$,;]/g, '')));
+      };
+    };
+
+    // Update eventCount of the specified location
+    try {
+      const updatedLocation = await Location.findOneAndUpdate(
+        { locationID: venueID },
+        { $inc: { eventCount: 1 } }
+      );
+    } catch (error) {
+      console.log(error);
+    }
 
     try {
       const location = await Location.findOne({ locationID: venueID });
