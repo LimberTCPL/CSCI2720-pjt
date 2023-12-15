@@ -22,7 +22,7 @@ class Register extends Component {
             if (response.ok) {
                 const result = await response.json();
                 console.log(result);
-                alert('User event created successfully');
+                alert('User created successfully');
                 this.fetchUserEvents();
             } else {
                 throw new Error('Failed to create user event');
