@@ -23,7 +23,6 @@ Collections:
   }
   Login{
     {
-    //userID ?
     loginName: {type: String, required: true, unique: true},
     loginpwd: {type: String, required: true},
     role: {type: String, required: true} //distinguish admin or user
