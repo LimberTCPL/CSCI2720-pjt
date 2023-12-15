@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class Register extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +29,7 @@ class Register extends Component {
             }
         } catch (error) {
             console.error(error);
-            alert('Something went wrong');
+            alert('The username has been registered');
         }
     };
 
@@ -49,32 +48,51 @@ class Register extends Component {
         }
     };
 
+    refresh = (e) => {
+        window.location.reload();
+    };
+
     render() {
         return (
-            <form className="event-form" onSubmit={this.handleSubmit}>
-                <h2>Edit User</h2>
-                <div className='form-group'>
-                    <label htmlFor="username">username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={this.state.username}
-                        onChange={this.handleChange}
-                    />
+            <div id='login' className="row d-flex justify-content-center ">
+                <div className="col-md-8 col-lg-6">
+                    <div className="card shadow-0 border">
+                        <div className="card-body p-4">
+                            <div className="form-outline mb-4">
+                                <form onSubmit={this.handleSubmit}>
+                                    <h2>New User</h2>
+                                    <div >
+                                        <label htmlFor="username">Username:</label>
+                                        <input
+                                            type="text"
+                                            id="username"
+                                            name="username"
+                                            value={this.state.username}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div >
+                                        <label htmlFor="password">Password:</label>
+                                        <input
+                                            type="text"
+                                            id="password"
+                                            name="password"
+                                            value={this.state.password}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <button type="submit" style={{ display: 'block', padding: '5px', margin: '5px' }}>
+                                        Create
+                                    </button>
+                                    <button type="button" onClick={this.refresh} style={{ padding: '5px', margin: '5px' }}>
+                                        Back
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className='form-group'>
-                    <label htmlFor="password">password:</label>
-                    <input
-                        type="text"
-                        id="password"
-                        name="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <button type="submit" style={{ display: 'block' }} >Create</button>
-            </form>
+            </div>
         );
     }
 }

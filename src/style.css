@@ -162,6 +162,13 @@ h2 {
   width: 1400px;
   height: auto;
   justify-content: center;
+  margin-top: 20px;
+  text-align: center;
+  padding-left: 30px;
+}
+
+.event-list h2 {
+  text-align: center;
 }
 
 .evet-list li {
@@ -170,5 +177,40 @@ h2 {
   margin-bottom: 10px; 
   width: 1100px;
   height: auto;
-  justify-content: center;
+  
+}
+
+.list-group {
+  list-style: none;
+  padding-left: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.list-group li {
+  margin-bottom: 10px;
+}
+
+.list-group li span {
+  display: block;
+}
+
+.list-group li input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.list-group li button {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.list-group li button:hover {
+  background-color: #0056b3;
 }

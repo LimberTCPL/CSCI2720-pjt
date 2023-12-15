@@ -58,7 +58,7 @@ class User extends React.Component {
       const {username,handleLogout} = this.props;
       return (
         <BrowserRouter>
-        <NavBar display={this.state.navDisplay} handleChange={this.handleChange}/>
+        <NavBar display={this.state.navDisplay} handleChange={this.handleChange} username={username} handleLogout={handleLogout}/>
         <Routes>
           <Route path="/" element={<Home handleChange={this.handleChange} />}/>
           <Route path="/map" element={<Map/>}/>

@@ -8,9 +8,10 @@ class EventForm extends Component {
     this.state = {
       title: '',
       date: '',
+      venueID: '',
       description: '',
       presenter: '',
-      priceInNum: ''
+      priceInStr: '',
     };
   }
 
@@ -20,15 +21,25 @@ class EventForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const {title, date, description, presenter, priceInNum } = this.state;
-    if (title.trim() && date.trim() && description.trim() && presenter.trim() && priceInNum.trim()) {
-      this.props.addEvent({title, date, description, presenter, priceInNum });
+    const { title, date, venueID, description, presenter, priceInStr } = this.state;
+
+    // Check if all fields are filled
+    if (title.trim() && date.trim() && venueID.trim() && description.trim() && presenter.trim() && priceInStr.trim()) {
+      this.props.addEvent({
+        title,
+        date,
+        venueID,
+        description,
+        presenter,
+        priceInStr,
+      });
       this.setState({
         title: '',
         date: '',
+        venueID: '',
         description: '',
         presenter: '',
-        priceInNum: ''
+        priceInStr: '',
       });
     } else {
       alert('Please fill in all the fields');
@@ -36,6 +47,7 @@ class EventForm extends Component {
   };
 
   render() {
+    const { locations } = this.props;
     return (
       <form className="event-form" onSubmit={this.handleSubmit}>
         <h2>Create Event</h2>
@@ -60,6 +72,15 @@ class EventForm extends Component {
           />
         </div>
         <div className='form-group'>
+          <label htmlFor="venueID">Venue:</label>
+          <select id="venueID" name="venueID" value={this.state.venueID} onChange={this.handleChange}>
+            <option value="">Select Venue</option>
+            {locations.map(location => (
+              <option key={location.locationID} value={location.locationID}>{location.location}</option>
+            ))}
+          </select>
+        </div>
+        <div className='form-group'>
           <label htmlFor="description">Description:</label>
           <input
             type="text"
@@ -80,12 +101,12 @@ class EventForm extends Component {
           />
         </div>
         <div className='form-group'>
-          <label htmlFor="priceInNum">Price:</label>
+          <label htmlFor="priceInStr">Price:</label>
           <input
             type="text"
-            id="priceInNum"
-            name="priceInNum"
-            value={this.state.priceInNum}
+            id="priceInStr"
+            name="priceInStr"
+            value={this.state.priceInStr}
             onChange={this.handleChange}
           />
         </div>

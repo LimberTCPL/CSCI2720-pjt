@@ -146,7 +146,7 @@ db.once('open', function () {
       });
   })
 
-//for favourite locations
+  //for favourite locations
   app.post('/addToFavorite', (req, res) => {
     FavoriteLocation.updateOne(
       { user: req.body.username },
@@ -162,8 +162,8 @@ db.once('open', function () {
   app.post('/removeFromFavorite', (req, res) => {
     FavoriteLocation.updateOne(
       { user: req.body.username },
-      { $pull: { locations: {$eq: req.body.locationID} } }
-      )
+      { $pull: { locations: { $eq: req.body.locationID } } }
+    )
       .then((data) => {
         console.log('removed')
       })
@@ -176,11 +176,11 @@ db.once('open', function () {
     FavoriteLocation.find({ user: { $eq: username } })
       .then((data) => {
         let response = data[0];
-        if (!response) {response = JSON.parse({locations: []})}
+        if (!response) { response = JSON.parse({ locations: [] }) }
         res.send(response);
       })
       .catch((error) => {
-        const response = JSON.stringify({locations: []})
+        const response = JSON.stringify({ locations: [] })
         res.send(response)
       });
   })
@@ -192,7 +192,7 @@ db.once('open', function () {
     FavoriteLocation.findOne({ user: { $eq: username } })
       .then((data) => {
         locationList = data.locations;
-        if (!locationList) {locationList = []}
+        if (!locationList) { locationList = [] }
         Location.find({ locationID: { $in: locationList } })
           .then((data) => {
             console.log(data)
@@ -207,8 +207,8 @@ db.once('open', function () {
         console.log(error);
         ssres.status(500).json({ error: 'Internal server error' });
       });
-      console.log(locationList)
-    
+    console.log(locationList)
+
   })
 
 
@@ -399,23 +399,39 @@ db.once('open', function () {
   //mongodb CRUD
 
 
-  app.post('/adminevents', (req, res) => {
 
-    const { title, venueID, date, description, presenter, priceInStr, priceInNum } = req.body;
-    const maxEvent = Event.findOne().sort({ eventID: -1 });
-    const eventID = maxEvent ? maxEvent.eventID + 1 : 1;
-    const newEvent = new Event({ eventID, title, venueID, date, description, presenter, priceInStr, priceInNum });
+  app.post('/adminevents', async (req, res) => {
+    const { title, date, venueID, description, presenter, priceInStr } = req.body;
+    const eventID = 1;
+    const priceInNum = parseInt(priceInStr);
 
-    newEvent.save()
-      .then(() => {
-        console.log("A new event created successfully");
-        res.json({ message: 'Event created successfully' });
-      })
-      .catch((error) => {
-        console.log("Failed to save new event");
-        res.status(500).json({ error: 'Failed to create event' });
+    try {
+      const location = await Location.findOne({ locationID: venueID });
+
+      if (!location) {
+        console.log('Location not found.');
+        res.status(404).json({ error: 'Location not found.' });
+        return;
+      }
+
+      const event = new Event({
+        eventID,
+        title,
+        venueID: location._id,
+        date,
+        description,
+        presenter,
+        priceInStr,
+        priceInNum,
       });
 
+      await event.save();
+      console.log('Event created successfully!');
+      res.status(200).json({ message: 'Event created successfully!' });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to create event.' });
+    }
   });
 
   app.post('/users', (req, res) => {
@@ -458,6 +474,16 @@ db.once('open', function () {
       })
       .catch(error => {
         res.status(500).json({ error: "Failed to read events" });
+      });
+  });
+
+  app.get('/locations', (req, res) => {
+    Location.find({})
+      .then(locations => {
+        res.json(locations);
+      })
+      .catch(error => {
+        res.status(500).json({ error: "Failed to read locations" });
       });
   });
 

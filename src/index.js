@@ -4,7 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import Admin from './Admin';
 import User from './User';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
 import Register from './component/Register';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
   const [refreshToken, setRefreshToken] = useState(null);
   const [username, setUsername] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [showRegisrt,setShowRegister] = useState(false);
+  const [showRegisrt, setShowRegister] = useState(false);
 
   useEffect(() => {
     // Get the access token from the cookies when the page loads
@@ -39,7 +39,7 @@ const App = () => {
         username: e.target.username.value,
         password: e.target.password.value,
       });
-      
+
       var responseData = response.data;
 
       setAccessToken(responseData.accessToken);
@@ -55,12 +55,12 @@ const App = () => {
       }
       Cookies.set('accessToken', responseData.accessToken, { expires: 1 }); // The token will expire after 7 days
     } catch (err) {
-        alert("Wrong username or password")
-        e.target.username.value ='';
-        e.target.password.value ='';
+      alert("Wrong username or password")
+      e.target.username.value = '';
+      e.target.password.value = '';
     }
 
-    
+
   };
 
   const handleRefresh = async () => {
@@ -69,7 +69,7 @@ const App = () => {
     });
 
     setAccessToken(responseData.accessToken);
-    
+
     const base64Url = responseData.accessToken.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const payload = JSON.parse(window.atob(base64));
@@ -116,50 +116,47 @@ const App = () => {
 
   return (
     <div>
-      {!showRegisrt?(
+      {!showRegisrt ? (
         <div>
-        {!accessToken ? (
-          <div id='login' className="row d-flex justify-content-center ">
-            <div className="col-md-8 col-lg-6">
-              <div className="card shadow-0 border">
-                <div className="card-body p-4">
-                  <div className="form-outline mb-4">
+          {!accessToken ? (
+            <div id='login' className="row d-flex justify-content-center ">
+              <div className="col-md-8 col-lg-6">
+                <div className="card shadow-0 border">
+                  <div className="card-body p-4">
+                    <div className="form-outline mb-4">
                       <label className="form-label"><h2>Login</h2></label>
                     </div>
-                  <form onSubmit={handleLogin}>
-                    <div className="form-group">
-                      <label for="exampleInputEmail1">User name</label>  
-                      <input type="text" className='form-control' name="username" placeholder="Type your username" />
-                    </div>
-                  <div className="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" className='form-control' name="password" placeholder="Type your password" />
+                    <form onSubmit={handleLogin}>
+                      <div className="form-group">
+                        <label for="exampleInputEmail1">User name</label>
+                        <input type="text" className='form-control' name="username" placeholder="Type your username" />
+                      </div>
+                      <div className="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" className='form-control' name="password" placeholder="Type your password" />
+                      </div>
+                      <button type="submit" style={{ padding: '5px', margin: '5px' }}>Login</button>
+                      <button type="button" style={{  padding: '5px', margin: '5px' }} onClick={handleShowRegister}>Register</button>
+                    </form>
                   </div>
-                  <button type="submit">Login</button>
-                </form>
-                <p>
-          Don't have an account?{" "}
-          <button onClick={handleShowRegister}>Register</button> 
-        </p>
                 </div>
               </div>
             </div>
-          </div>
 
-        ) : (
-          <>
-            {isAdmin ? (
+          ) : (
+            <>
+              {isAdmin ? (
 
-              <Admin username={username} handleLogout={handleLogout} />
-            ) : (
-              <User name="Map for Cultural Programmes" username={username} handleLogout={handleLogout} />
-            )}
-          </>
-        )}
+                <Admin username={username} handleLogout={handleLogout} />
+              ) : (
+                <User name="Map for Cultural Programmes" username={username} handleLogout={handleLogout} />
+              )}
+            </>
+          )}
         </div>
-      ):(
+      ) : (
         <>
-          <Register/>
+          <Register handleLogout={handleLogout} />
         </>
       )}
     </div>

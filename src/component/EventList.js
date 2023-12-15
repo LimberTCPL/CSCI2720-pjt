@@ -5,7 +5,7 @@ class EventList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editedEvents: [],
+      editedEvents: []
     };
   }
 
@@ -47,7 +47,7 @@ class EventList extends Component {
   };
 
   render() {
-    const { events, deleteEvent } = this.props;
+    const { events, deleteEvent} = this.props;
     const { editedEvents } = this.state;
 
     return (

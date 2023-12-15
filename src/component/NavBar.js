@@ -27,6 +27,7 @@ class NavBar extends Component {
       }
     }
     render() {
+      const {username,handleLogout} = this.props;
       return (
         <nav id='verNav' class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', display: this.props.display}}>
             <div class="container-fluid">
@@ -43,6 +44,10 @@ class NavBar extends Component {
               </div>
             </div>
           </div>
+          <div style = {{ position : "absolute", top: 0, right: 0 }}>
+                <div>Hello, {username}. Welcome Back!</div>
+                <button onClick = { handleLogout }>Logout</button>
+              </div>
         </nav>
     )
   }

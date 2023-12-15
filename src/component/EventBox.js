@@ -8,13 +8,29 @@ class EventBox extends Component {
     super(props);
     this.state = {
       events: [],
-
+      locations:[],
     };
   }
 
   componentDidMount() {
     this.fetchEvents();
+    this.fetchLocations();
   }
+
+  fetchLocations = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/locations');
+      if (response.ok) {
+        const data = await response.json();
+        this.setState({ locations: data });
+      } else {
+        throw new Error('Failed to fetch locationss');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Something went wrong');
+    }
+  };
 
   fetchEvents = async () => {
     try {
@@ -32,6 +48,8 @@ class EventBox extends Component {
   };
 
   addEvent = async (eventData) => {
+    console.log("addEvent:",eventData);
+    console.log("type:",typeof(eventData));
     try {
       const response = await fetch('http://localhost:5001/adminevents', {
         method: 'POST',
@@ -102,7 +120,7 @@ class EventBox extends Component {
   render() {
     return (
       <>
-        <EventForm addEvent={this.addEvent} />
+        <EventForm locations={this.state.locations} addEvent={this.addEvent} />
         <EventList events={this.state.events} deleteEvent={this.deleteEvent} updateEvent={this.updateEvent}/>
       </>
     );
