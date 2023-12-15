@@ -45,7 +45,7 @@ class User extends React.Component {
   }
   static getDerivedStateFromProps(){
     const route = window.location.pathname
-    console.log(route)
+    //console.log(route)
     if (route == '/'){
       return {navDisplay: 'none', navBarIndex: 0}
     }else{

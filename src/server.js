@@ -158,9 +158,8 @@ db.once('open', function () {
       });
   })
 
-  app.post('/isFavorite', (req, res) => {
+  app.post('/favoriteList', (req, res) => {
     const username = req.body.username
-    const locationID = req.body.locationID
     FavoriteLocation.find({ user: { $eq: username } })
       .then((data) => {
         let response = data[0];

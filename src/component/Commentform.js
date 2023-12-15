@@ -54,7 +54,7 @@ class Commentform extends Component{
         let tempcomment = [];
         //this.setState({locID: this.props.locationID});
         const locationID = window.location.pathname.split('/')[2]
-        console.log(locationID)
+        //console.log(locationID)
         const response = await fetch(`http://localhost:5001/listcomment/${locationID}`,{
         method: 'GET',
         });

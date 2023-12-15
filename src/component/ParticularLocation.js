@@ -26,7 +26,8 @@ class ParticularLocation extends Component {
         },
         events:[],
         comments:{},
-        username: this.props.username
+        username: this.props.username,
+        favButton: 'Add To Favorite'
       }
     }
   
@@ -61,8 +62,8 @@ class ParticularLocation extends Component {
       });
     }
 
-    async isFavorite(locationID) {
-      const response = await fetch("http://localhost:5001/isFavorite", { 
+    async isFavorite() {
+      const response = await fetch("http://localhost:5001/favoriteList", { 
         method: "POST", 
         mode: "cors", 
         headers: {
@@ -71,13 +72,10 @@ class ParticularLocation extends Component {
         }, 
         body: JSON.stringify({
           'username': this.state.username,
-          'locationID': locationID
         })
       })
       let data = await response.json();
       return data;
-
-      
     }
   
     /*
@@ -127,7 +125,12 @@ class ParticularLocation extends Component {
         */
       })
       this.isFavorite(locationID).then((data) => {
-        console.log(data.locations)
+        const favLocations = data.locations
+        console.log(favLocations)
+        if (favLocations.includes(locationID)){
+          console.log('yes')
+          this.setState({favButton: 'Remove From Favorite'})
+        }
       }
       )
     }
@@ -172,7 +175,7 @@ class ParticularLocation extends Component {
                 </tr>
               </tbody>
             </table>
-            <button onClick={this.handleClick}>Add to Favorite</button>
+            <button onClick={this.handleClick}>{this.state.favButton}</button>
           </div>
   
           <Events title={`Event List for ${this.state.location.location}`} venueID={this.state.location.locationID} />

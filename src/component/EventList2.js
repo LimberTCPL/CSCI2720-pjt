@@ -15,7 +15,7 @@ class EventList2 extends Component {
     componentDidUpdate() {
       $('#eventTable').DataTable().destroy();
       
-      console.log(this.state.results);
+      //console.log(this.state.results);
   
       $('#eventTable').DataTable({
         data: this.state.results,
