@@ -40,6 +40,10 @@ class Register extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const { username, password } = this.state;
+        if (username.length > 16){
+            window.alert('Please choose a username with less then 16 characters')
+            return
+        }
         if (username.trim() && password.trim()) {
             this.addUserEvent({ username, password });
             this.setState({ username: '', password: '' });

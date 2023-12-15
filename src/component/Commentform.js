@@ -20,8 +20,8 @@ class Commentform extends Component{
   
     async handleSubmit(e) {
       e.preventDefault();
-      this.setState({locID: this.props.locationID});
-      this.setState({date: new Date().toLocaleString(),});
+      await this.setState({locID: this.props.locationID});
+      await this.setState({date: new Date().toLocaleString(),});
       const newcomment = {
         comment: this.state.comment,
         username: this.props.username,
