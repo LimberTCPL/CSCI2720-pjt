@@ -60,7 +60,7 @@ class User extends React.Component {
         <BrowserRouter>
         <NavBar display={this.state.navDisplay} handleChange={this.handleChange} username={username} handleLogout={handleLogout}/>
         <Routes>
-          <Route path="/" element={<Home handleChange={this.handleChange} />}/>
+          <Route path="/" element={<Home handleChange={this.handleChange} username={username} handleLogout={handleLogout}/>}/>
           <Route path="/map" element={<Map/>}/>
           <Route path="/locations" element={<Locations/>} />
           <Route path="/locations/:locationID" element={<ParticularLocation username={username}/>} />

@@ -138,7 +138,7 @@ const App = () => {
                       </div>
                       <div style={{ display: "flex", justifyContent: "center", margin: '20px' }}>
                         <button type="submit" style={{ padding: '5px', margin: '5px' }}>Login</button>
-                        <button type="button" style={{  padding: '5px', margin: '5px' }} onClick={handleShowRegister}>Register</button>
+                        <button type="button" style={{ padding: '5px', margin: '5px' }} onClick={handleShowRegister}>Register</button>
                       </div>
                     </form>
                   </div>

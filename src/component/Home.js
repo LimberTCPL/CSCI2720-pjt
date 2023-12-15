@@ -15,6 +15,8 @@ class Home extends Component {
       console.log('hi')
     }
       render() {
+        const username =this.props.username
+        const handleLogout = this.props.handleLogout;
           return (
               <>
               <div style={{position: 'relative'}}>
@@ -38,6 +40,10 @@ class Home extends Component {
                     </ul>
                   </nav> 
                   <h1 style={{marginTop: '90vh', zIndex: '100', float: 'right', paddingRight: '8vw', fontSize: "3vw", color:'purple'}}>Modern Event-Location System</h1>
+                  <div style={{position: 'absolute', marginTop: '70vh', marginLeft: '8.3vw', zIndex: '100', float: 'right', fontSize: '8vh', padding: 0}}>
+                    <button onClick = { handleLogout }><i class="bi bi-box-arrow-left" ></i></button>
+                  </div>
+                  
                 </div>
               </div>
               </>
