@@ -30,10 +30,9 @@ Collections:
   }
   Comment{
     {
-    //commentID: {type: Number, required: true, unique: true},
     comment: {type: String, required: true},
-    user: {type: String, required: true}, //userID maybe? form props
-    locID: {type: Number, required: true}, //locationID form props
+    user: {type: String, required: true}, 
+    locID: {type: Number, required: true},
     date: {type: String, requred: true}//need ?
     }
   }
