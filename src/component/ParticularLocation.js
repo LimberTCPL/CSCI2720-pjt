@@ -27,7 +27,9 @@ class ParticularLocation extends Component {
         events:[],
         comments:{},
         username: this.props.username,
-        favButton: 'Add To Favorite'
+        favButton: 'Add To Favorite',
+        favButtonIcon: '',
+        favButtonColor: '#95b6f0'
       }
     }
   
@@ -81,10 +83,18 @@ class ParticularLocation extends Component {
     handleClick() {
       if (this.state.favButton == 'Add To Favorite'){
         this.addToFav()
-        this.setState({favButton: 'Remove From Favorite'})
+        this.setState({
+          favButton: 'Remove From Favorite',
+          favButtonIcon: '-fill',
+          favButtonColor: '#fa8c90'
+        })
       }else{
         this.removeFromFav()
-        this.setState({favButton: 'Add To Favorite'})
+        this.setState({
+          favButton: 'Add To Favorite',
+          favButtonIcon: '',
+          favButtonColor: '#95b6f0'
+        })
       }
     }
 
@@ -111,7 +121,12 @@ class ParticularLocation extends Component {
         favLocations.forEach(id => {
           
           if (id == locationID){
-            this.setState({favButton: 'Remove From Favorite'})
+            this.setState({
+              favButton: 'Remove From Favorite',
+              favButtonIcon: '-fill',
+              favButtonColor: '#fa8c90'
+            })
+            
           }
         });
       })
@@ -206,7 +221,7 @@ class ParticularLocation extends Component {
                 </tr>
               </tbody>
             </table>
-            <button onClick={this.handleClick}>{this.state.favButton}</button>
+            <button onClick={this.handleClick} style={{backgroundColor: this.state.favButtonColor}}>{this.state.favButton} <i class={`bi bi-heart${this.state.favButtonIcon}`} style={{color: '#fc474d'}}></i></button>
           </div>
   
           <Events title={`Event List for ${this.state.location.location}`} venueID={this.state.location.locationID} />

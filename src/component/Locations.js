@@ -50,7 +50,7 @@ class Locations extends Component {
       return (
         <div class="m-4">
           <h2>Location List</h2>
-          <hr /><Link style={{display:'inline-block'}} to="/favorite" ><button type="button">Click Here to see you favorite locations</button></Link>
+          <hr /><Link style={{display:'inline-block', position:'absolute', zIndex:'1'}} to="/favorite" ><button type="button" style={{backgroundColor: '#fc474d', zIndex:'-1'}}><i class="bi bi-heart"></i></button></Link>
           <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-light">
             <thead>
               <tr>

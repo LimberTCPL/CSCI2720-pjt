@@ -59,8 +59,8 @@ class FavoriteList extends Component {
     render() {
       return (
         <div class="m-4">
-          <h2>Favorite Location List</h2>
-          <hr /><Link style={{display:'inline-block'}} to="/locations" ><button type="button">Go Back to Location List</button></Link>
+          <h2>My Favorite Locations</h2>
+          <hr /><Link style={{display:'inline-block', position:'absolute', zIndex:'1'}} to="/locations" ><button type="button" style={{backgroundColor: '#3c8cba', zIndex:'-1'}}><i class="bi bi-box-arrow-left"></i></button></Link>
           <table id="locationTable" class="p-2 table table-bordered table-striped table-sm table-light">
             <thead>
               <tr>
