@@ -26,10 +26,22 @@ class NavBar extends Component {
         this.setState({navBarCollapse: 'collapse', navBarIndex: 1})
       }
     }
+
+    componentDidMount() {
+      this.setUpdatedTime();
+    }
+
+    setUpdatedTime() {
+      const date = new Date();
+      const time = `${date.getHours().toString()}:${date.getMinutes().toString().padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
+
+      this.setState( { updatedTime: time });
+    }
+
     render() {
       const {username,handleLogout} = this.props;
       return (
-        <nav id='verNav' class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', display: this.props.display}}>
+        <nav id='verNav' class="navbar navbar-expand-lg bg-light" style={{position: 'sticky', top: '0px', 'z-index': '100', width: '100vw', height: "70px", display: this.props.display}}>
             <div class="container-fluid">
               <a class="navbar-brand" href="/" onClick={this.handleChange}><img src={icon}  width="35px" height="auto" style={{margin: 0}}/></a>
               <button class="navbar-toggler" type="button" onClick={this.navBarCollapseControl} >
@@ -40,10 +52,17 @@ class NavBar extends Component {
               <Link class="nav-link" to="/map">Map</Link>
               <Link class="nav-link" to="/locations">Locations</Link>
               <Link class="nav-link" to="/events">Events</Link>
-              <div style = {{ position : "absolute", top: 0, right: '60pt', maxWidth: '50vw'}}>
-                <div>Welcome Back! {username} </div>
-                <button onClick = { handleLogout }>Logout</button>
-          </div>
+              <div style = {{ position : "absolute", top: 0, right: '60pt', maxWidth: '50vw', display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div>Last Updated Time: {this.state.updatedTime}</div>
+                <div style={{ display: "flex", alignmItems: "center" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ marginRight: "10px"}}>Welcome Back!</div>
+                    <div>{username} </div>
+                  </div>
+
+                  <button onClick = { handleLogout } style={{ marginLeft: "auto", padding: "3px", margin: "3px", height: "80%" }}>Logout</button>
+                </div>
+              </div>
               {/*<Link class="nav-link" to="/search">Search</Link>*/}
               </div>
             </div>
