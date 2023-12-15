@@ -120,10 +120,10 @@ const App = () => {
       {!showRegisrt ? (
         <div>
           {!accessToken ? (
-            <div id='login' className="row d-flex justify-content-center ">
-              <div className="col-md-8 col-lg-6">
+            <div id='login' className="row d-flex justify-content-center" >
+              <div className="col-md-8 col-lg-6" >
                 <div className="card shadow-0 border">
-                  <div className="card-body p-4">
+                  <div className="card-body p-4" >
                     <div className="form-outline">
                       <label className="form-label"><h2>Login</h2></label>
                     </div>
@@ -132,7 +132,7 @@ const App = () => {
                         <label for="exampleInputEmail1">User name</label>
                         <input type="text" className='form-control' name="username" placeholder="Type your username" />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group" >
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" className='form-control' name="password" placeholder="Type your password" />
                       </div>

@@ -110,7 +110,7 @@ class ParticularLocation extends Component {
       }
       setTimeout(() =>{
         this.setState({favButtonIsDisable: 0})
-      }, 500)
+      }, 750)
     }
 
     async getFavoriteList() {
