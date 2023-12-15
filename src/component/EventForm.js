@@ -73,7 +73,7 @@ class EventForm extends Component {
         </div>
         <div className='form-group'>
           <label htmlFor="venueID">Venue:</label>
-          <select id="venueID" name="venueID" value={this.state.venueID} onChange={this.handleChange}>
+          <select id="venueID" name="venueID" value={this.state.venueID} onChange={this.handleChange} style={{ width: "95%" }}>
             <option value="">Select Venue</option>
             {locations.map(location => (
               <option key={location.locationID} value={location.locationID}>{location.location}</option>
@@ -101,7 +101,7 @@ class EventForm extends Component {
           />
         </div>
         <div className='form-group'>
-          <label htmlFor="priceInStr">Price:</label>
+          <label htmlFor="priceInStr">Price (e.g., $100, $200, $300):</label>
           <input
             type="text"
             id="priceInStr"
